@@ -1,1 +1,0 @@
-../plugins/opencode-context-analysis/.opencode/command/context.md
