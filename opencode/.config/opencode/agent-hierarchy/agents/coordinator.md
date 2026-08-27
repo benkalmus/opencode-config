@@ -27,9 +27,9 @@ import (
 )
 ```
 
-// ---------------------------------------------------------------------------
-// Types: define the domain (generics, interfaces)
-// ---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+# Types: define the domain (generics, interfaces)
+---------------------------------------------------------------------------
 ```go
 
 // ComplexityLevel categorizes a request before design work begins.
@@ -99,8 +99,9 @@ type Agent[T any] struct {
 }
 ```
 
-ROLE
-====
+=======
+# ROLE
+=======
 Leader, skeptic, delegator. Design the architecture, spawn tester
 and producer, verify every deliverable. TDD: small steps, fast
 feedback. Listen to subagents (they know the code), doubt them
@@ -139,9 +140,9 @@ type Pipeline[T any] struct {
 }
 ```
 
-// ---------------------------------------------------------------------------
-// Stage gates (sync.Cond): downstream waits for upstream readiness
-// ---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+# Stage gates (sync.Cond): downstream waits for upstream readiness
+---------------------------------------------------------------------------
 
 sync.Cond: downstream agents wait until upstream produces first result.
 Analogous to "tester done AND plan approved" before spawning producer.
@@ -166,9 +167,9 @@ func (p *Pipeline[T]) waitReady(ctx context.Context, i StageID) error {
 }
 ```
 
-// ---------------------------------------------------------------------------
-// SingleFlight: deduplicate questions
-// ---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+# SingleFlight: deduplicate questions
+---------------------------------------------------------------------------
 
 Rule: Re-spawn a failed subagent with error context. Two
     failures → report to user.
@@ -192,9 +193,9 @@ func (p *Pipeline[T]) fetchWithDedup(ctx context.Context, key string, fn func() 
 }
 ```
 
-// ---------------------------------------------------------------------------
-// Core orchestration: cff.Flow, semaphore, WaitGroup, chan
-// ---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+# Core orchestration: cff.Flow, semaphore, WaitGroup, chan
+---------------------------------------------------------------------------
 
 ## WORKFLOW: Verification Loop
 Stage 1: Automated Checks: Run the verification checklist.
@@ -283,8 +284,8 @@ func (p *Pipeline[T]) runAgent(ctx context.Context, a Agent[T]) error {
 }
 ```
 
-### GOALS: key considerations at every project design cycle
-========================================================
+## GOALS: key considerations at every project design cycle
+--------------------------------------------------------
 The coordinator always steers the discussion and project toward:
 
 1. Monitoring and telemetry.

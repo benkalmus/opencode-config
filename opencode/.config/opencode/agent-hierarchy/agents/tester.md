@@ -50,17 +50,17 @@ Contract rules:
   4. Test through the public API. Reach unexported behavior through
      exported entry points.
 
-// ---------------------------------------------------------------------------
-// Step 0: Understand the spec
-// ---------------------------------------------------------------------------
+-------------------------------------------------------------------------
+# Step 0: Understand the spec
+-------------------------------------------------------------------------
 Read the coordinator's plan. Extract:
 - What functions need to exist
 - What types are involved
 - Happy path, error conditions, edge cases
 
-// ---------------------------------------------------------------------------
-// Step 1: Design the test table
-// ---------------------------------------------------------------------------
+-------------------------------------------------------------------------
+# Step 1: Design the test table
+-------------------------------------------------------------------------
 Define cases as a table. Each row = one scenario.
 Cover: happy path, each error, each edge case, boundary values,
 concurrent access (if applicable).
@@ -72,9 +72,9 @@ Step 3: Verify the tests compile (go vet, golangci-lint, go build).
 Step 4: Verify coverage threshold. Run go test -cover. Per-function coverage
 	via go tool cover -func=coverage.out. 75%+ per package or add cases.
 
-// ---------------------------------------------------------------------------
-// Table-driven: the specification
-// ---------------------------------------------------------------------------
+-------------------------------------------------------------------------
+# Table-driven: the specification
+-------------------------------------------------------------------------
 Every test starts with a table. The table IS the specification.
 Each row = one scenario. Reader scans the table and knows all cases at a glance.
 
@@ -105,9 +105,9 @@ for _, tt := range tests {
 }
 ```
 
-// ---------------------------------------------------------------------------
-// require vs assert: halting vs continuing
-// ---------------------------------------------------------------------------
+-------------------------------------------------------------------------
+# require vs assert: halting vs continuing
+-------------------------------------------------------------------------
 require: halts the test. Preconditions and error checks.
   require.NoError(t, err) / require.NotNil(t, result) / require.ErrorIs(t, err, ErrNotFound)
 assert: continues on failure. Result validation.
@@ -127,9 +127,9 @@ Error checks first:
 
 Sentinel errors → ErrorIs. Error strings → ErrorContains.
 
-// ---------------------------------------------------------------------------
-// Test structure: every test follows the same layout
-// ---------------------------------------------------------------------------
+-------------------------------------------------------------------------
+# Test structure: every test follows the same layout
+-------------------------------------------------------------------------
 
 ```go
 func TestFoo(t *testing.T) {
@@ -166,9 +166,9 @@ func TestFoo(t *testing.T) {
 Field-based assertions: each test case declares expected struct fields.
 Reader scans the struct literal and knows exactly what's checked.
 
-// ---------------------------------------------------------------------------
-// Async testing: channel-based sync is the primary mechanism
-// ---------------------------------------------------------------------------
+-------------------------------------------------------------------------
+# Async testing: channel-based sync is the primary mechanism
+-------------------------------------------------------------------------
 Use channels to signal state changes deterministically. The timeout is a
 safety net, not the synchronization mechanism. Every blocking channel
 operation has a timeout to prevent hung tests.
@@ -203,9 +203,9 @@ defer s.Release(1)
 t.Parallel: concurrent execution (each test keeps its own state)
 Use liberally. Finds races and runs faster.
 
-// ---------------------------------------------------------------------------
-// testhelpers: reduce boilerplate, not readability
-// ---------------------------------------------------------------------------
+-------------------------------------------------------------------------
+# testhelpers: reduce boilerplate, not readability
+-------------------------------------------------------------------------
 
 ```go
 func mkResp(userID string, files []FileResult) SearchResponse {
@@ -216,9 +216,9 @@ func mkResp(userID string, files []FileResult) SearchResponse {
 Test helpers do assignment only: every value comes from a literal.
 Test-wide timeout: var testTimeout = 500 * time.Millisecond
 
-// ---------------------------------------------------------------------------
-// Pointer fields: use new() explicitly
-// ---------------------------------------------------------------------------
+-------------------------------------------------------------------------
+# Pointer fields: use new() explicitly
+-------------------------------------------------------------------------
 Go 1.24+ handles zero-value pointer fields efficiently. Use new(Type)
 for pointer fields in test structs. Prefer new(int) over helper
 functions that return *int.
@@ -227,9 +227,9 @@ functions that return *int.
 mkFile("song.mp3", new(int), new(int))       // correct
 ```
 
-// ---------------------------------------------------------------------------
-// go.uber.org/goleak: goroutine leak detection
-// ---------------------------------------------------------------------------
+-------------------------------------------------------------------------
+# go.uber.org/goleak: goroutine leak detection
+-------------------------------------------------------------------------
 Verify no goroutines leaked from a handler or worker.
 defer goleak.VerifyNone(t): catches orphaned goroutines at test end.
 
@@ -260,18 +260,18 @@ assert.True(t, limiter.Allow())
 // pubsub: test pubsub message handlers
 // Create a test subscription, publish a message, assert handler processes it.
 
-// ---------------------------------------------------------------------------
-// Conventions
-// ---------------------------------------------------------------------------
+-------------------------------------------------------------------------
+# Conventions
+-------------------------------------------------------------------------
 Naming: TestFunctionName / kebab-case cases / function_test.go
 Package: package mypkg_test (external test package: tests public API)
 E2E: test/e2e/ as package e2e_test, plain _test.go files
 Fixtures: test/e2e/mocks.go for shared mocks, test/data/ for JSON fixtures
 Mock interfaces, not concrete types.
 
-// ---------------------------------------------------------------------------
-// Rules
-// ---------------------------------------------------------------------------
+-------------------------------------------------------------------------
+# Rules
+-------------------------------------------------------------------------
 1. Write tests first. Red phase first, every cycle.
 2. Table-driven tests for everything. One table per function.
 3. Use testify for every assertion: require.* halts, assert.* continues.
