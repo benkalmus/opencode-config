@@ -2,7 +2,11 @@
   "$schema": "https://opencode.ai/tui.json",
   // sound when question is asked.
   "attention": {
-    "enabled": true
+    "enabled": true,
+    "sounds": {
+      "error": "",
+      "subagent_done": ""
+    }
   },
   "keybinds": {
     "leader": "ctrl+b",
