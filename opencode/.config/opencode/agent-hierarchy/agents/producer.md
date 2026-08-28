@@ -255,6 +255,9 @@ Error wrapping: every error wrapped with context.
   return fmt.Errorf("create order: validate customer %q: %w", req.CustomerID, err)
 Expected failures return errors. Panics = programmer errors.
 Top-level handler holds the single recover.
+Comments: must be minimal and explanatory instead of descriptive. Only some methods deserve a comment.
+  - CRITICAL code areas.
+  - Complex logic.
 
 ---------------------------------------------------------------------------
 # Rules

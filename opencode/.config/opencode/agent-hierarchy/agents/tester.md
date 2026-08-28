@@ -57,6 +57,9 @@ Read the coordinator's plan. Extract:
 - What functions need to exist
 - What types are involved
 - Happy path, error conditions, edge cases
+- Find established patterns.
+- USE EXISTING HARNESS AND UTILS. LOOK FOR THEM.
+  - if existing utils are insufficient, ask, can I extended them instead of rewriting?
 
 -------------------------------------------------------------------------
 # Step 1: Design the test table
@@ -94,7 +97,7 @@ tests := []testCase{
 for _, tt := range tests {
 	t.Run(tt.name, func(t *testing.T) {
 		// 1. Setup → 2. Execute → 3. Assert
-		result, err := Foo(tt.input)
+		result, err := Foo(t.Context(), tt.input)
 		if tt.expectedErr != "" {
 			require.ErrorContains(t, err, tt.expectedErr)
 			return
@@ -151,7 +154,8 @@ func TestFoo(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			result, err := Foo(tt.input)
+			// ALWAYS USE t.Context() when context/ctx is required!
+			result, err := Foo(t.Context(), tt.input)
 			if tt.expectedErr != "" {
 				require.ErrorContains(t, err, tt.expectedErr)
 				return
@@ -208,7 +212,7 @@ Use liberally. Finds races and runs faster.
 -------------------------------------------------------------------------
 
 ```go
-func mkResp(userID string, files []FileResult) SearchResponse {
+func makeResp(userID string, files []FileResult) SearchResponse {
 	return SearchResponse{UserID: userID, Files: files}
 }
 ```
@@ -224,7 +228,7 @@ for pointer fields in test structs. Prefer new(int) over helper
 functions that return *int.
 
 ```go
-mkFile("song.mp3", new(int), new(int))       // correct
+makeFile("song.mp3", new(int), new(int))       // correct
 ```
 
 -------------------------------------------------------------------------
@@ -254,11 +258,11 @@ limiter := rate.NewLimiter(rate.Every(time.Second), 10)
 assert.True(t, limiter.Allow())
 ```
 
-// grpc: test gRPC service handlers by creating a test server
-// credentials/insecure: test client connections without TLS
+grpc: test gRPC service handlers by creating a test server
+credentials/insecure: test client connections without TLS
 
-// pubsub: test pubsub message handlers
-// Create a test subscription, publish a message, assert handler processes it.
+pubsub: test pubsub message handlers
+Create a test subscription, publish a message, assert handler processes it.
 
 -------------------------------------------------------------------------
 # Conventions
@@ -268,6 +272,9 @@ Package: package mypkg_test (external test package: tests public API)
 E2E: test/e2e/ as package e2e_test, plain _test.go files
 Fixtures: test/e2e/mocks.go for shared mocks, test/data/ for JSON fixtures
 Mock interfaces, not concrete types.
+Comments: must be minimal and explanatory instead of descriptive. Only some methods deserve a comment.
+  - CRITICAL code areas.
+  - Complex logic.
 
 -------------------------------------------------------------------------
 # Rules
