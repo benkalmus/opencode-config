@@ -8,10 +8,12 @@
     "minContextLimit": 120000,
     // "maxContextLimit": "80%",
     "modelMaxLimits": {
+      "llama-cpp/qwen-3.6-35b-q4-mtp": 70000,
+      "llama-cpp/qwen-3.6-35b-a3b": 70000,
+      "llama-cpp/qwen-3.6-27b": 70000,
+      "llama-cpp/qwen-3.6-27b-fable": 70000,
       "llama-cpp/ornith-1.0": 70000,
-      "ornith-1.0": 70000,
-      "llama-cpp/qwen-3.6-35b-q4-mtp": 70000
-      // "openrouter/deepseek/deepseek-v4-pro": 250000
+      "llama-cpp/qwen-3.8-27b-q4": 70000
     }
   }
 }
