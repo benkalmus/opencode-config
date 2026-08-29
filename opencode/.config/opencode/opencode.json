@@ -299,7 +299,7 @@
           "name": "Qwen 3.6 35B A3B MoE",
           "compatibility": { "reasoningField": "reasoning_content" },
           "limit": {
-            "context": 65000,
+            "context": 80000,
             "output": 10000
           }
         },
@@ -307,7 +307,7 @@
           "name": "qwen-3.6-35b-q4-mtp",
           "compatibility": { "reasoningField": "reasoning_content" },
           "limit": {
-            "context": 65000,
+            "context": 80000,
             "output": 10000
           }
         },
@@ -315,7 +315,7 @@
           "name": "Qwen 3.6 27B",
           "compatibility": { "reasoningField": "reasoning_content" },
           "limit": {
-            "context": 65000,
+            "context": 80000,
             "output": 10000
           }
         },
@@ -323,7 +323,7 @@
           "name": "qwen-3.6-27b-fable",
           "compatibility": { "reasoningField": "reasoning_content" },
           "limit": {
-            "context": 65000,
+            "context": 80000,
             "output": 10000
           }
         },
@@ -331,7 +331,7 @@
           "name": "Qwen 3.8 27B Q4",
           "compatibility": { "reasoningField": "reasoning_content" },
           "limit": {
-            "context": 65000,
+            "context": 80000,
             "output": 10000
           },
           "options": {
@@ -347,7 +347,7 @@
           "name": "ornith-1.0",
           "compatibility": { "reasoningField": "reasoning_content" },
           "limit": {
-            "context": 65000,
+            "context": 80000,
             "output": 10000
           }
         }
