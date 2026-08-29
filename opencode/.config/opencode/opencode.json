@@ -121,7 +121,7 @@
           "tail*": "allow",
           "grep*": "allow",
           "find *": "allow",
-          "rg*": "allow",
+          "rg": "allow",
           "cd *": "allow",
           "grep": "allow",
           "go test *": "allow",
