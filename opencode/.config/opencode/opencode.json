@@ -352,6 +352,14 @@
             "context": 80000,
             "output": 10000
           }
+        },
+        "qwen-3.8-27b-vllm": {
+          "name": "Qwen 3.8 27B (vLLM)",
+          "compatibility": { "reasoningField": "reasoning_content" },
+          "limit": {
+            "context": 80000,
+            "output": 10000
+          }
         }
       }
     }
