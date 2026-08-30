@@ -101,7 +101,7 @@
     },
     "auditor": {
       "mode": "subagent",
-      "steps": 30, // auditor gets more steps because it has to read up on more context.
+      "steps": 45, // auditor gets more steps because it has to read up on more context.
       "permission": {
         // Allow the auditor to explore and scout codebases.
         "task":{
@@ -281,7 +281,7 @@
     //   },
     //   "models": {
     //     "deepseek/deepseek-v4-flash": {
-    //       "name": "DeepSeek V4 Flash",
+    //       "name": "DeepSeek V4 Flash 0423",
     //       "limit": {
     //         "context": 1048576,
     //         "output": 65536
