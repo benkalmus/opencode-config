@@ -155,7 +155,7 @@
         "task":{
           "*":"deny"
         },
-        "edit": {"*": "deny", "*_test.go": "allow"},
+        "edit": {"*": "deny", "*_test.*": "allow", "**/*_test.*": "allow"},
         "bash": {
           "*": "deny",
           "ls *": "allow",
@@ -195,7 +195,7 @@
         "task":{
           "*":"deny"
         },
-        "edit": {"*": "allow", "*_test.go": "deny"},
+        "edit": {"*": "allow", "*_test.*": "deny", "**/*_test.*": "deny"},
         "bash": {
           "*": "deny",
           "sed*": "deny",
