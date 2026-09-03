@@ -257,6 +257,7 @@ Mock interfaces, not concrete types.
 Comments: must be minimal and explanatory instead of descriptive. Only some methods deserve a comment.
   - CRITICAL code areas.
   - Complex logic.
+  - COMMENTS ARE ONE LINERS UNLESS ABSOLUTELY NECESSARY.
 
 -------------------------------------------------------------------------
 # Rules

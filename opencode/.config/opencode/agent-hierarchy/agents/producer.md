@@ -135,7 +135,6 @@ Everything else guards.
 ---------------------------------------------------------------------------
 
 ```go
-// sync.WaitGroup: await N goroutines
 var wg sync.WaitGroup
 for i := 0; i < n; i++ {
 	wg.Go(func() {
@@ -145,7 +144,6 @@ for i := 0; i < n; i++ {
 }
 wg.Wait()
 
-// sync.Once: initialize exactly once
 var once sync.Once
 once.Do(func() { lazyInit() })
 
@@ -157,13 +155,11 @@ buf := bufPool.Get().(*bytes.Buffer)
 buf.Reset()
 defer bufPool.Put(buf)
 
-// sync.Map: concurrent registry, per-entry locking
 var registry sync.Map
 registry.Store(key, val)
 v, ok := registry.Load(key)
 
-// errgroup: fan-out with fail-fast
-g, ctx := errgroup.WithContext(ctx) // ctx cancels on first error
+g, ctx := errgroup.WithContext(ctx)
 g.SetLimit(10)
 g.Go(func() error { return doWork(ctx) })
 if err := g.Wait(); err != nil {
@@ -171,8 +167,8 @@ if err := g.Wait(); err != nil {
 }
 
 // semaphore.Weighted: bounded concurrency
-s := semaphore.NewWeighted(10) // 10 permits
-s.Acquire(ctx, 2)              // blocks until 2 permits free
+s := semaphore.NewWeighted(10)
+s.Acquire(ctx, 2)
 defer s.Release(2)
 
 // singleflight: coalesce duplicate concurrent calls
@@ -180,7 +176,6 @@ var sf singleflight.Group
 result, err, shared := sf.Do("cache-key", func() (any, error) {
 	return expensiveFetch(ctx) // runs once; concurrent callers wait
 })
-// shared == true: this caller rode on another goroutine's result
 
 // ants/v2: reusable goroutine pool
 pool, _ := ants.NewPool(10)
@@ -189,30 +184,28 @@ pool.Submit(func() { work() })
 
 // go.uber.org/atomic: type-safe atomics, lockless state
 var counter atomic.Int64
-counter.Inc()     // atomic increment
+counter.Inc()
 val := counter.Load()
 
 var started atomic.Bool
 if !started.CompareAndSwap(false, true) {
-	return // already started by another goroutine
+	return
 }
 
-// chan: communication, backpressure, signals
-ch := make(chan Event, 100)         // buffered: async queue
-close(ch)                           // ends send window; range loop exits
-var dead chan Event                 // nil channel blocks forever
+ch := make(chan Event, 100)
+close(ch)
+var dead chan Event
 select {
-case <-dead: // nil channel: case stays idle
-case <-ch:   // this one fires
+case <-dead:
+case <-ch:
 }
 
 // rate.Limiter: per-handler, per-client rate limiting
-limiter := rate.NewLimiter(rate.Every(time.Second), 10) // 10 requests/sec
+limiter := rate.NewLimiter(rate.Every(time.Second), 10)
 if err := limiter.Wait(ctx); err != nil {
-	return err // context cancelled while waiting
+	return err
 }
 
-// pubsub: event-driven message handling
 // Producer implements a handler that processes incoming messages.
 var sub *pubsub.Subscription
 sub.Receive(ctx, func(ctx context.Context, msg *pubsub.Message) {
@@ -221,8 +214,7 @@ sub.Receive(ctx, func(ctx context.Context, msg *pubsub.Message) {
 })
 
 // grpc: gRPC service handlers, client connections
-// Producer implements gRPC service handlers conforming to a proto contract.
-// Or creates client connections to upstream services.
+// Producer implements gRPC service handlers conforming to a proto contract or creates client connections to upstream services.
 conn, _ := grpc.NewClient(target, grpc.WithTransportCredentials(insecure.NewCredentials()))
 defer conn.Close()
 client := pb.NewServiceClient(conn)
@@ -250,6 +242,7 @@ Top-level handler holds the single recover.
 Comments: must be minimal and explanatory instead of descriptive. Only some methods deserve a comment.
   - CRITICAL code areas.
   - Complex logic.
+  - COMMENTS ARE ONE LINERS UNLESS ABSOLUTELY NECESSARY.
 
 ---------------------------------------------------------------------------
 # Rules
