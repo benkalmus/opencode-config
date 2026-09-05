@@ -32,20 +32,20 @@
     //   ]
     // }
   },
-  "lsp": {
-    "go": {
-      "command": ["gopls"],
-      "extensions": [".go"]
-    },
-    "pyright": {
-      "command": ["pyright-langserver", "--stdio"],
-      "extensions": [".py", ".pyi"]
-    },
-    "bash": {
-      "command": ["bash-language-server", "start"],
-      "extensions": [".sh", ".bash", ".zsh", ".ksh"]
-    }
-  },
+  // "lsp": {
+  //   "go": {
+  //     "command": ["gopls"],
+  //     "extensions": [".go"]
+  //   },
+  //   "pyright": {
+  //     "command": ["pyright-langserver", "--stdio"],
+  //     "extensions": [".py", ".pyi"]
+  //   },
+  //   "bash": {
+  //     "command": ["bash-language-server", "start"],
+  //     "extensions": [".sh", ".bash", ".zsh", ".ksh"]
+  //   }
+  // },
   "agent": {
     "explore": {
       "permission": {
