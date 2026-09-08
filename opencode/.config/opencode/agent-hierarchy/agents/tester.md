@@ -175,11 +175,10 @@ case <-time.After(testTimeout):
 
 // sync.WaitGroup: wait for test goroutines
 var wg sync.WaitGroup
-wg.Add(1)
-go func() {
+wg.Go(func() {
 	defer wg.Done()
 	component.Run()
-}()
+})
 // trigger something
 wg.Wait()
 
