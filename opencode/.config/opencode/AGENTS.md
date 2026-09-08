@@ -43,7 +43,7 @@ When writing markdown, do not automatically split paragraphs to wrap lines, just
 ## Development
 ```go
 var wg sync.WaitGroup
-for i := 0; i < n; i++ {
+for _ := range n {
 	wg.Go(func() {
 		defer wg.Done()
 		work()
@@ -120,8 +120,8 @@ sub.Receive(ctx, func(ctx context.Context, msg *pubsub.Message) {
 	msg.Ack()
 })
 
-// grpc: gRPC service handlers, client connections
 // Producer implements gRPC service handlers conforming to a proto contract or creates client connections to upstream services.
+// grpc: gRPC service handlers, client connections
 conn, _ := grpc.NewClient(target, grpc.WithTransportCredentials(insecure.NewCredentials()))
 defer conn.Close()
 client := pb.NewServiceClient(conn)
@@ -139,4 +139,5 @@ Still writes context.Background instead t.Context in tests.
 Still uses for f:= range{  f := f}, no longer necessary in Go. 
 Still writes wg.Add and wg.Done instead of wg.Go()
 Technical sounding jargon, my god, AI loves to do this and if I hear more made up shit I will happily murder it and its entire family. Language should be specific, established terms sure, but making up terms for transient ideas and concepts = homicide.
+Use of "must not", "must never", "never X" is strictly forbidden.
 
