@@ -303,6 +303,10 @@
       "sudo *": "deny",
       "sudo": "deny",
       "git commit *--no-verify*": "deny",
+      "*<<*": "deny",
+      "python* -c*": "deny",
+      "node* -e*": "deny",
+      "node* --eval*": "deny",
       "rm -f *": "ask",
       "rm -rf *": "ask",
       "rm -fr *": "ask"
