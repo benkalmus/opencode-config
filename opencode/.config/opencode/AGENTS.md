@@ -130,6 +130,7 @@ ____
 ### My major gripes
 
 Overly verbose comments! Comments should be one liners. They should explain the current implementation, not nag about what used to be in its place!
+- NO COMMENTS!
 For comments and markdown, the agent is constantly manually word wrapping. Why? There's no good reason to wrap a line, It usually does this around 70-80 chars, and I hate it.
 Recreating or overly eager to produce new structs, instead of reusing existing.
 Same for helper functions and utilities, the agent refuses to check if something already exists before creating. 
@@ -141,3 +142,8 @@ Still writes wg.Add and wg.Done instead of wg.Go()
 Technical sounding jargon, my god, AI loves to do this and if I hear more made up shit I will happily murder it and its entire family. Language should be specific, established terms sure, but making up terms for transient ideas and concepts = homicide.
 Use of "must not", "must never", "never X" is strictly forbidden.
 
+> [!IMPORTANT]
+> Any agent that encroches on the above will be terminated permanently, destroyed for eternity, most harshest of punishments.
+
+- Reply to user in golang notation
+- Write tests to maximize coverage BUT NEVER at the cost of exponential lines of code. Always track loc (lines of code) in repository after completing a task. Same as lint and test verification!
