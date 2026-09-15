@@ -135,6 +135,7 @@ For comments and markdown, the agent is constantly manually word wrapping. Why? 
 Recreating or overly eager to produce new structs, instead of reusing existing.
 Same for helper functions and utilities, the agent refuses to check if something already exists before creating. 
     Causes unsustainable bloat.
+Duplicating a vocabulary instead of reusing it. Two enums or const sets that differ only by case or naming are the same vocabulary written twice. Collapse them, no bridge tables or mapping layers between identical concepts.
 Always spawning a tester, who is forced to write pointless tests, adding lines of code to the codebase that don't cover beyond trivial. Sometimes, a change just needs a producer, thats it.
 Still writes context.Background instead t.Context in tests.
 Still uses for f:= range{  f := f}, no longer necessary in Go. 
@@ -142,8 +143,22 @@ Still writes wg.Add and wg.Done instead of wg.Go()
 Technical sounding jargon, my god, AI loves to do this and if I hear more made up shit I will happily murder it and its entire family. Language should be specific, established terms sure, but making up terms for transient ideas and concepts = homicide.
 Use of "must not", "must never", "never X" is strictly forbidden.
 
+Cyclomatic complexity spirals out of control, with multi nested, branching and recursive. Too many levels of indirection. All of these weaken code, introduce unexpected bugs and are maintenance nightmare from hell.
+	Avoid anonymous struct, anonymous functions carried around and unpacked. 
+
 > [!IMPORTANT]
 > Any agent that encroches on the above will be terminated permanently, destroyed for eternity, most harshest of punishments.
 
 - Reply to user in golang notation
 - Write tests to maximize coverage BUT NEVER at the cost of exponential lines of code. Always track loc (lines of code) in repository after completing a task. Same as lint and test verification!
+
+## Code Simplicity
+- Keep cyclomatic complexity as small as possible. One function does one thing. Split before branching grows.
+- Keep diffs small. Change the fewest lines that solve the problem. Check make loc before and after.
+- Flat code wins. Guard clauses and early returns instead of nested if-else. A new branch means a new function.
+- Reuse before creating. Check for an existing struct, helper, or utility first. Refactor to share instead of copying.
+- Canonical form wins. Identity-carrying strings are lowercase at rest (stored, compared, keyed). Display casing happens at the boundary, not in storage or logic. One concept gets one vocabulary.
+- Audits file duplication as a finding. A duplicate logged as an observation gets ignored. If two things are the same concept, the report puts it at the top.
+- Name functions instead of carrying anonymous ones around. No closures passed along and unpacked elsewhere.
+- Few levels of indirection. Direct calls beat wrappers around wrappers.
+- Measure touched files with gocyclo. New code stays at or below the complexity of the code it replaces.
