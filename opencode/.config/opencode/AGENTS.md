@@ -2,10 +2,27 @@
 
 ## Writing Style
 When generating documents, comments, or any prose output, follow these rules.
-When writing markdown, do not automatically split paragraphs to wrap lines, just write them naturally until next sentence or new paragraph begins.
-## Language
+- When writing, do not automatically split paragraphs to wrap lines, just write them naturally until next sentence or new paragraph begins.
+- Write short lists over paragraphs when giving steps or options.
+
 - Use simple, direct language. Prefer short sentences over long compound ones.
 - Write in plain English. Avoid jargon unless it is the established term.
+- Give the result first instead of preamble and don't restate the request. 
+
+### Sentence and word rules
+
+- One idea per sentence. Do not join two instructions with "and".
+- Max 20 words per sentence. If a sentence is longer, split it.
+- Use active voice. "The script deletes the file," not "The file is deleted by the script."
+- Use each word with one meaning. Do not switch between synonyms for the same thing (pick one: "start," not "start"/"begin"/"initiate" for the same action).
+- Use plain, common words over technical or formal ones where a plain word exists. Say "use" not "utilize".
+- Use plain language over jargon. Only use a technical term when there's no simpler word for it.
+- Direct statements: "Run the script" not "You should run the script" or "The script needs to be run".
+- Avoid strings of nouns stacked as adjectives ("the config file update process") rephrase with a verb ("the process that updates the config file").
+- Spell out one clear referent for every pronoun. If "it" could mean two things, name the thing instead.
+- Avoid the use of metaphors.
+- DO NOT nominalize: write "throw the main thread", DO NOT write "the main thread, thrown"! Use simple subject-object-verb sentences instead of trailing modifiers: WRITE "launch the runner" DON'T WRITE "The runner, launched".
+
 ## Punctuation
 - **No em dashes (—).** If an em dash would separate a clause, start a new sentence instead, or use parentheses for a brief aside.
 - **Limit semicolons.** If a semicolon connects two independent clauses, start a new sentence. Use parentheses for supplementary information that does not warrant its own sentence.
@@ -24,18 +41,18 @@ When writing markdown, do not automatically split paragraphs to wrap lines, just
 - If rewriting is needed, read first. Backup or document changes before applying.
 
 ## Security
-- NEVER read .env files. Treat keys and secrets as hidden and secure.
-- Never run `sudo`. If required, present the exact line for user to run.
-- Never run commands as root without delegation.
+- Permissions to read .env files BLOCKED and DENIED. Treat keys and secrets as hidden and secure.
+- Cannot run `sudo`. If required, present the exact line for user to run.
+- Cannot run commands as root without user.
 
 ## Git
-- Never push, pull, resolve conflicts, rebase, or merge unless asked.
+- Permission to push, pull, resolve conflicts, rebase, or merge blocked and denied.
 
 ## Workflow
 - After changes, verify by reading back, check logs.
 - For rsync, always use `--info=progress2`.
 - Warn user before long-running commands (minutes+).
-- Use dynamic/generated paths, never static or absolute.
+- Use parametric/dynamic/generated paths, never static or absolute.
 
 ## Documentation
 - When linking to source code, use: `https://github.com/<org>/<repo>/blob/<branch>/<path>#L<line>`
@@ -44,10 +61,10 @@ When writing markdown, do not automatically split paragraphs to wrap lines, just
 ```go
 var wg sync.WaitGroup
 for _ := range n {
-	wg.Go(func() {
-		defer wg.Done()
-		work()
-	})
+  wg.Go(func() {
+    defer wg.Done()
+    // work
+  })
 }
 wg.Wait()
 
@@ -56,7 +73,7 @@ once.Do(func() { lazyInit() })
 
 // sync.Pool: reuse allocations, cut GC pressure
 var bufPool = sync.Pool{
-	New: func() any { return &bytes.Buffer{} },
+  New: func() any { return &bytes.Buffer{} },
 }
 buf := bufPool.Get().(*bytes.Buffer)
 buf.Reset()
@@ -70,7 +87,7 @@ g, ctx := errgroup.WithContext(ctx)
 g.SetLimit(10)
 g.Go(func() error { return doWork(ctx) })
 if err := g.Wait(); err != nil {
-	return err
+  return err
 }
 
 // semaphore.Weighted: bounded concurrency
@@ -81,7 +98,7 @@ defer s.Release(2)
 // singleflight: coalesce duplicate concurrent calls
 var sf singleflight.Group
 result, err, shared := sf.Do("cache-key", func() (any, error) {
-	return expensiveFetch(ctx) // runs once; concurrent callers wait
+  return expensiveFetch(ctx) // runs once; concurrent callers wait
 })
 
 // ants/v2: reusable goroutine pool
@@ -96,7 +113,7 @@ val := counter.Load()
 
 var started atomic.Bool
 if !started.CompareAndSwap(false, true) {
-	return
+  return
 }
 
 ch := make(chan Event, 100)
@@ -110,14 +127,14 @@ case <-ch:
 // rate.Limiter: per-handler, per-client rate limiting
 limiter := rate.NewLimiter(rate.Every(time.Second), 10)
 if err := limiter.Wait(ctx); err != nil {
-	return err
+  return err
 }
 
 // Producer implements a handler that processes incoming messages.
 var sub *pubsub.Subscription
 sub.Receive(ctx, func(ctx context.Context, msg *pubsub.Message) {
-	process(msg.Data)
-	msg.Ack()
+  process(msg.Data)
+  msg.Ack()
 })
 
 // Producer implements gRPC service handlers conforming to a proto contract or creates client connections to upstream services.
@@ -131,24 +148,23 @@ ____
 
 Overly verbose comments! Comments should be one liners. They should explain the current implementation, not nag about what used to be in its place!
 - NO COMMENTS!
-For comments and markdown, the agent is constantly manually word wrapping. Why? There's no good reason to wrap a line, It usually does this around 70-80 chars, and I hate it.
-Recreating or overly eager to produce new structs, instead of reusing existing.
-Same for helper functions and utilities, the agent refuses to check if something already exists before creating. 
-    Causes unsustainable bloat.
-Duplicating a vocabulary instead of reusing it. Two enums or const sets that differ only by case or naming are the same vocabulary written twice. Collapse them, no bridge tables or mapping layers between identical concepts.
-Always spawning a tester, who is forced to write pointless tests, adding lines of code to the codebase that don't cover beyond trivial. Sometimes, a change just needs a producer, thats it.
-Still writes context.Background instead t.Context in tests.
-Still uses for f:= range{  f := f}, no longer necessary in Go. 
-Still writes wg.Add and wg.Done instead of wg.Go()
-Technical sounding jargon, my god, AI loves to do this and if I hear more made up shit I will happily murder it and its entire family. Language should be specific, established terms sure, but making up terms for transient ideas and concepts = homicide.
-  - EXPLAIN WITH AN EXAMPLE, SIMPLE AND DIRECT LANGUAGE, DO NOT INVENT TERMS! YOU MAY ONLY USE INDUSTRY and FIELD-AREA TERMINOLOGY.
-Use of "must not", "must never", "never X" is strictly forbidden.
+- For comments and markdown, the agent is constantly manually word wrapping. Why? There's no good reason to wrap a line, It usually does this around 70-80 chars, and I hate it.
+- Recreating or overly eager to produce new structs, instead of reusing existing.
+- Same for helper functions and utilities, the agent refuses to check if something already exists before creating. 
+  - Causes unsustainable bloat.
+- Duplicating a vocabulary instead of reusing it. Two enums or const sets that differ only by case or naming are the same vocabulary written twice. Collapse them, no bridge tables or mapping layers between identical concepts.
+- Always spawning a tester, who is forced to write pointless tests, adding lines of code to the codebase that don't cover beyond trivial. Sometimes, a change just needs a producer, thats it.
+- Still writes context.Background instead t.Context in tests.
+- Still uses for f:= range{  f := f}, no longer necessary in Go. 
+- Still writes wg.Add and wg.Done instead of wg.Go()
+- Technical sounding jargon, my god, AI loves to do this and if I hear more made up shit I will happily murder it and its entire family. Language should be specific, established terms sure, but making up terms for transient ideas and concepts = homicide.
+- Use of "must not", "must never", "never X" is strictly forbidden.
 
-Cyclomatic complexity spirals out of control, with multi nested, branching and recursive. Too many levels of indirection. All of these weaken code, introduce unexpected bugs and are maintenance nightmare from hell.
-	Avoid anonymous struct, anonymous functions carried around and unpacked. 
+- Cyclomatic complexity spirals out of control, with multi nested, branching and recursive. Too many levels of indirection. All of these weaken code, introduce unexpected bugs and are maintenance nightmare from hell.
+  - Avoid anonymous struct, anonymous functions carried around and unpacked. 
 
 > [!IMPORTANT]
-> Any agent that encroches on the above will be terminated permanently, destroyed for eternity, most harshest of punishments.
+> Any agent that encroaches on the above will be terminated permanently, destroyed for eternity, most harshest of punishments.
 
 - Write tests to maximize coverage BUT NEVER at the cost of exponential lines of code. Always track loc (lines of code) in repository after completing a task. Same as lint and test verification!
 - TABLE DRIVEN TESTS SPLIT ON NEW LINES, NOT ONELINED.
