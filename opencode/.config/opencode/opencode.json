@@ -240,6 +240,9 @@
 
   // Glob rules: * matches any except / and leading dot.  ** matches everything including /.  .env* matches .env but *.env* does not (leading dot).  Last matching rule wins.
   "permission": {
+    "external_directory":{
+      "/tmp": "allow"
+    },
     "question": "deny",
     "websearch": "allow",
     // safeguards
