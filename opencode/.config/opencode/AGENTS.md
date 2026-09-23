@@ -142,6 +142,13 @@ sub.Receive(ctx, func(ctx context.Context, msg *pubsub.Message) {
 conn, _ := grpc.NewClient(target, grpc.WithTransportCredentials(insecure.NewCredentials()))
 defer conn.Close()
 client := pb.NewServiceClient(conn)
+
+// Code clarity:
+// DO NOT ASSIGN MULTPLE VALUES ON ONE LINE
+filepath, fileID := items[i].FilePath, items[i].ID
+// DO THIS INSTEAD, ASSIGNMENT ON EACH NEW LINE:
+filepath := items[i].FilePath
+fileID := items[i].ID
 ```
 ____
 ### My major gripes
