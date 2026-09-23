@@ -4,8 +4,10 @@
   "attention": {
     "enabled": true,
     "sounds": {
+      "default": "",
       "error": "",
-      "subagent_done": ""
+      "subagent_done": "",
+      "permission": ""
     }
   },
   "keybinds": {
