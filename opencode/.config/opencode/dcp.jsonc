@@ -4,8 +4,8 @@
     // Models degrade past 150k tokens. Best at 50-100k.
     // Models get lazy and increasingly expensive.
     // There is no good reason to push context past this point. Better to start new session.
-    "maxContextLimit": 180000,
-    "minContextLimit": 120000,
+    "maxContextLimit": 300000,
+    "minContextLimit": 180000,
     // "maxContextLimit": "80%",
     "modelMaxLimits": {
       "llama-cpp/qwen-3.6-35b-q4-mtp": 65000,
