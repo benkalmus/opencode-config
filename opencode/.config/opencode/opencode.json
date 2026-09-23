@@ -317,6 +317,7 @@
   },
   "plugin": [
     "./plugins/caveman/plugin.js",
+    "/home/benkalmus/work/opencode-scrub-session-plugin/scrub-session.js",
     // "./plugins/smartsnip.ts",
     "@tarquinen/opencode-dcp@latest",
     // "./plugin/context-usage.ts",
