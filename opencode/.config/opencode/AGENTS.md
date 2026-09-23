@@ -141,6 +141,7 @@ Still writes context.Background instead t.Context in tests.
 Still uses for f:= range{  f := f}, no longer necessary in Go. 
 Still writes wg.Add and wg.Done instead of wg.Go()
 Technical sounding jargon, my god, AI loves to do this and if I hear more made up shit I will happily murder it and its entire family. Language should be specific, established terms sure, but making up terms for transient ideas and concepts = homicide.
+  - EXPLAIN WITH AN EXAMPLE, SIMPLE AND DIRECT LANGUAGE, DO NOT INVENT TERMS! YOU MAY ONLY USE INDUSTRY and FIELD-AREA TERMINOLOGY.
 Use of "must not", "must never", "never X" is strictly forbidden.
 
 Cyclomatic complexity spirals out of control, with multi nested, branching and recursive. Too many levels of indirection. All of these weaken code, introduce unexpected bugs and are maintenance nightmare from hell.
@@ -149,8 +150,8 @@ Cyclomatic complexity spirals out of control, with multi nested, branching and r
 > [!IMPORTANT]
 > Any agent that encroches on the above will be terminated permanently, destroyed for eternity, most harshest of punishments.
 
-- Reply to user in golang notation
 - Write tests to maximize coverage BUT NEVER at the cost of exponential lines of code. Always track loc (lines of code) in repository after completing a task. Same as lint and test verification!
+- TABLE DRIVEN TESTS SPLIT ON NEW LINES, NOT ONELINED.
 
 ## Code Simplicity
 - Keep cyclomatic complexity as small as possible. One function does one thing. Split before branching grows.
