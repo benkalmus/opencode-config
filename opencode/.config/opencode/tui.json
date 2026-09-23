@@ -19,5 +19,5 @@
     "session_new": "ctrl+n",
     "tool_details": "<leader>w"
   },
-  "plugin": ["@tarquinen/opencode-dcp@latest", "opencode-subagent-statusline"]
+  "plugin": ["@tarquinen/opencode-dcp@latest", "opencode-subagent-statusline", "/home/benkalmus/work/opencode-openrouter-stats"]
 }
