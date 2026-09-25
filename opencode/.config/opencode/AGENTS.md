@@ -68,9 +68,6 @@ for _ := range n {
 }
 wg.Wait()
 
-var once sync.Once
-once.Do(func() { lazyInit() })
-
 // sync.Pool: reuse allocations, cut GC pressure
 var bufPool = sync.Pool{
   New: func() any { return &bytes.Buffer{} },
@@ -86,9 +83,6 @@ v, ok := registry.Load(key)
 g, ctx := errgroup.WithContext(ctx)
 g.SetLimit(10)
 g.Go(func() error { return doWork(ctx) })
-if err := g.Wait(); err != nil {
-  return err
-}
 
 // semaphore.Weighted: bounded concurrency
 s := semaphore.NewWeighted(10)
@@ -114,20 +108,6 @@ val := counter.Load()
 var started atomic.Bool
 if !started.CompareAndSwap(false, true) {
   return
-}
-
-ch := make(chan Event, 100)
-close(ch)
-var dead chan Event
-select {
-case <-dead:
-case <-ch:
-}
-
-// rate.Limiter: per-handler, per-client rate limiting
-limiter := rate.NewLimiter(rate.Every(time.Second), 10)
-if err := limiter.Wait(ctx); err != nil {
-  return err
 }
 
 // Producer implements a handler that processes incoming messages.
@@ -160,11 +140,9 @@ Overly verbose comments! Comments should be one liners. They should explain the 
 - Same for helper functions and utilities, the agent refuses to check if something already exists before creating. 
   - Causes unsustainable bloat.
 - Duplicating a vocabulary instead of reusing it. Two enums or const sets that differ only by case or naming are the same vocabulary written twice. Collapse them, no bridge tables or mapping layers between identical concepts.
-- Always spawning a tester, who is forced to write pointless tests, adding lines of code to the codebase that don't cover beyond trivial. Sometimes, a change just needs a producer, thats it.
 - Still writes context.Background instead t.Context in tests.
 - Still uses for f:= range{  f := f}, no longer necessary in Go. 
 - Still writes wg.Add and wg.Done instead of wg.Go()
-- Technical sounding jargon, my god, AI loves to do this and if I hear more made up shit I will happily murder it and its entire family. Language should be specific, established terms sure, but making up terms for transient ideas and concepts = homicide.
 - Use of "must not", "must never", "never X" is strictly forbidden.
 
 - Cyclomatic complexity spirals out of control, with multi nested, branching and recursive. Too many levels of indirection. All of these weaken code, introduce unexpected bugs and are maintenance nightmare from hell.
@@ -176,6 +154,26 @@ Overly verbose comments! Comments should be one liners. They should explain the 
 - Write tests to maximize coverage BUT NEVER at the cost of exponential lines of code. Always track loc (lines of code) in repository after completing a task. Same as lint and test verification!
 - TABLE DRIVEN TESTS SPLIT ON NEW LINES, NOT ONELINED.
 
+- A test has the following structure:
+
+```go
+// Setup (test harness or framework)
+// Action
+// Assert
+```
+Unless it's table-driven, then tests should follow:
+```go
+// Initial setup (e.g test harness/framework)
+// Define testcases
+// For each testcase
+// per testcase setup (optional: when action needs fresh or specific setup)
+// Action
+// Assert
+```
+
+No branching at any point between testcases!
+Use the above skeleton for EVERY test written or edited. Each section should begin with the above comment //.
+
 ## Code Simplicity
 - Keep cyclomatic complexity as small as possible. One function does one thing. Split before branching grows.
 - Keep diffs small. Change the fewest lines that solve the problem. Check make loc before and after.
@@ -186,3 +184,4 @@ Overly verbose comments! Comments should be one liners. They should explain the 
 - Name functions instead of carrying anonymous ones around. No closures passed along and unpacked elsewhere.
 - Few levels of indirection. Direct calls beat wrappers around wrappers.
 - Measure touched files with gocyclo. New code stays at or below the complexity of the code it replaces.
+- Comments explain consequences and conditions, but they do not describe the code; we can already read!
