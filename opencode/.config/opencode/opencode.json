@@ -40,6 +40,19 @@
         ],
         "type": "local"
       },
+      "trvl": {
+        "disabled": true,
+        "type": "local",
+        "command": ["trvl", "mcp"]
+      },
+      "trip-search": {
+        "disabled": true,
+        "type": "local",
+        "command": ["/home/benkalmus/work/trip-search-mcp/.venv/bin/python", "-m", "trip_search_mcp.server"],
+        "environment": {
+          "SERPAPI_KEY": "{env:SERPAPI_KEY}"
+        }
+      },
     }
   },
 
