@@ -47,6 +47,16 @@ adopt:
 		stow -v --adopt -t $(HOME) $$pkg; \
 	done
 
+# Import live cli.json into the repo, validate it, and restore the stow symlink.
+# The TUI rewrites this file by replace (breaking the link); run this after
+# changing settings in the TUI instead of letting the next restow collide.
+sync-cli:
+	@test -f $(HOME)/.config/opencode/cli.json || (echo "no live cli.json"; exit 1)
+	@if [ ! -L $(HOME)/.config/opencode/cli.json ]; then cp $(HOME)/.config/opencode/cli.json opencode/.config/opencode/cli.json; else echo "link intact, nothing to import"; fi
+	@if [ ! -L $(HOME)/.config/opencode/cli.json ]; then rm $(HOME)/.config/opencode/cli.json; fi
+	@stow -R -t $(HOME) opencode
+	@ls -l $(HOME)/.config/opencode/cli.json
+
 clean:
 	@echo "WARNING: This will remove opencode config symlinks from \$$HOME."
 	@printf "Proceed? [y/N] "; read ans; case "$$ans" in [yY]|[yY][eE][sS]) ;; *) echo "Aborted."; exit 1;; esac
