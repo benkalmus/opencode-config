@@ -6,7 +6,8 @@
   "session": {
     "toggle.exploration_grouping": "none",
     "sidebar": "hide",
-    "permissions": "autoaccept"
+    "permissions": "autoaccept",
+    "grouping": "none"
   },
   // sound when a question is asked.
   "attention": {
