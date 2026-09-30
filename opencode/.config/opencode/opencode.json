@@ -12,6 +12,25 @@
         "type": "remote",
         "url": "http://opti.local:8931/mcp",
       },
+      // Chrome CDP via Playwright MCP. Wrapper auto-starts Chrome if :9222 is down.
+      // Manual run: google-chrome-stable --remote-debugging-port=9222 --user-data-dir=$HOME/.hermes/chrome-debug --no-first-run --no-default-browser-check &
+      // Stop wrapper-started Chrome: sh ~/.config/opencode/scripts/chrome-cdp-mcp.sh stop
+      // Toggle with "disabled" (no "enable" flag in V2 schema).
+      "chrome-cdp": {
+        "disabled": true,
+        "type": "local",
+        "command": ["sh", "-c", "exec $HOME/.config/opencode/scripts/chrome-cdp-mcp.sh"],
+      },
+      // Camoufox Docker (REST on :9377) via camofox-mcp bridge. 47 tools, keep disabled unless needed.
+      // Verify server: curl -s http://localhost:9377/health
+      "camofox": {
+        "disabled": true,
+        "type": "local",
+        "command": ["npx", "-y", "camofox-mcp@latest"],
+        "environment": {
+          "CAMOFOX_URL": "http://localhost:9377",
+        },
+      },
       "engram": {
         "disabled": true,
         "command": [
