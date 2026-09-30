@@ -4,7 +4,9 @@
     "name": "tokyonight"
   },
   "session": {
-    "toggle.exploration_grouping": "none"
+    "toggle.exploration_grouping": "none",
+    "sidebar": "hide",
+    "permissions": "autoaccept"
   },
   // sound when a question is asked.
   "attention": {
