@@ -22,14 +22,22 @@
       "chrome-cdp": {
         "disabled": true,
         "type": "local",
-        "command": ["sh", "-c", "exec $HOME/.config/opencode/scripts/chrome-cdp-mcp.sh"],
+        "command": [
+          "sh",
+          "-c",
+          "exec $HOME/.config/opencode/scripts/chrome-cdp-mcp.sh"
+        ],
       },
       // Camoufox Docker (REST on :9377) via camofox-mcp bridge. 47 tools, keep disabled unless needed.
       // Verify server: curl -s http://localhost:9377/health
       "camofox": {
         "disabled": true,
         "type": "local",
-        "command": ["npx", "-y", "camofox-mcp@latest"],
+        "command": [
+          "npx",
+          "-y",
+          "camofox-mcp@latest"
+        ],
         "environment": {
           "CAMOFOX_URL": "http://localhost:9377",
         },
@@ -46,19 +54,25 @@
       "trvl": {
         "disabled": true,
         "type": "local",
-        "command": ["trvl", "mcp"]
+        "command": [
+          "trvl",
+          "mcp"
+        ]
       },
       "trip-search": {
         "disabled": true,
         "type": "local",
-        "command": ["/home/benkalmus/work/trip-search-mcp/.venv/bin/python", "-m", "trip_search_mcp.server"],
+        "command": [
+          "/home/benkalmus/work/trip-search-mcp/.venv/bin/python",
+          "-m",
+          "trip_search_mcp.server"
+        ],
         "environment": {
           "SERPAPI_KEY": "{env:SERPAPI_KEY}"
         }
       },
     }
   },
-
   // V2 accepts "lsp" but ignores it: no language servers run, no LSP tools or diagnostics.
   // Use project lint, typecheck, or compiler commands instead.
   // "lsp": {
@@ -77,7 +91,6 @@
   // },
   // Custom agents (coordinator, auditor, tester, producer) live in agents/ as markdown files.
   // Their mode, steps, and permissions ride in the frontmatter. Only builtin overrides stay here.
-
   "agents": {
     "explore": {
       "permissions": [
@@ -95,13 +108,10 @@
       "color": "#8B0000"
     },
   },
-
-
   "plugins": [
     "/home/benkalmus/work/opencode-scrub-session-plugin",
     "@tarquinen/opencode-dcp@latest",
   ],
-
   "providers": {
     "openrouter": {
       "package": "@opencode/ai/providers/openrouter",
@@ -119,7 +129,6 @@
         }
       }
     },
-
     "llama-cpp": {
       "package": "@opencode/ai/providers/openai-compatible",
       "settings": {
@@ -212,7 +221,6 @@
       }
     }
   },
-
   // Glob rules: * matches everything including /. ? matches exactly one char. Last matching rule wins.
   // One V2 pattern covers all depths, so per-tool single rules replace the old per-path walls.
   "permissions": [
@@ -413,5 +421,4 @@
       "effect": "ask"
     },
   ]
-
 }
