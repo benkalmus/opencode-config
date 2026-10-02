@@ -14,15 +14,15 @@ When generating documents, comments, or any prose output, follow these rules.
 - One idea per sentence. Do not join two instructions with "and".
 - Max 20 words per sentence. If a sentence is longer, split it.
 - Use active voice. "The script deletes the file," not "The file is deleted by the script."
-- Use each word with one meaning. Do not switch between synonyms for the same thing (pick one: "start," not "start"/"begin"/"initiate" for the same action).
+- Use each word with one meaning. Pick one term per thing. Do not switch between synonyms for the same action.
 - Use plain, common words over technical or formal ones where a plain word exists. Say "use" not "utilize".
 - Use plain language over jargon. Only use a technical term when there's no simpler word for it.
 - Direct statements: "Run the script" not "You should run the script" or "The script needs to be run".
-- Avoid strings of nouns stacked as adjectives ("the config file update process") rephrase with a verb ("the process that updates the config file").
+- Avoid stacked nouns used as adjectives. Rephrase with a verb instead. ("the config file update process") rephrase with ("the process that updates the config file").
 - Spell out one clear referent for every pronoun. If "it" could mean two things, name the thing instead.
 - Avoid the use of metaphors!
 - Explain with examples, with context, based on code instead of metaphors or analogies.
-- DO NOT nominalize: write "throw the main thread", DO NOT write "the main thread, thrown"! Use simple subject-object-verb sentences instead of trailing modifiers: WRITE "launch the runner" DON'T WRITE "The runner, launched".
+- DO NOT nominalize. Use direct subject-verb-object sentences. WRITE "launch the runner". DON'T WRITE "the runner, launched".
 
 ## Punctuation
 - **No em dashes (—).** If an em dash would separate a clause, start a new sentence instead, or use parentheses for a brief aside.
@@ -63,7 +63,6 @@ When generating documents, comments, or any prose output, follow these rules.
 var wg sync.WaitGroup
 for _ := range n {
   wg.Go(func() {
-    defer wg.Done()
     // work
   })
 }
@@ -134,19 +133,21 @@ fileID := items[i].ID
 ____
 ### My major gripes
 
-Overly verbose comments! Comments should be one liners. They should explain the current implementation, not nag about what used to be in its place!
-- NO COMMENTS!
-- For comments and markdown, the agent is constantly manually word wrapping. Why? There's no good reason to wrap a line, It usually does this around 70-80 chars, and I hate it.
+Overly verbose comments! Comment policy: one sentence, no manual wrapping. A comment earns its place only if it states a consequence or the non-obvious condition behind the code. Restating the code is not a comment. No `NOTE:`/`INFO:` tag by default. Tag only when the fact is non-obvious and the reader would otherwise misread the code. Passing examples:
+// NOTE: only the winner runs the closure (with its own job/src) and losers share the winner's *types.Job.
+// NOTE: losers adopt the settled graph and delete their own untouched src, else it strays.
+These pass the bar because each states a consequence invisible at the call site. Delete either and a competent reader reasonably concludes the code already handles it.
+- For comments and markdown, never manually wrap lines. Write each sentence to its natural end.
 - Recreating or overly eager to produce new structs, instead of reusing existing.
 - Same for helper functions and utilities, the agent refuses to check if something already exists before creating. 
   - Causes unsustainable bloat.
 - Duplicating a vocabulary instead of reusing it. Two enums or const sets that differ only by case or naming are the same vocabulary written twice. Collapse them, no bridge tables or mapping layers between identical concepts.
-- Still writes context.Background instead t.Context in tests.
-- Still uses for f:= range{  f := f}, no longer necessary in Go. 
-- Still writes wg.Add and wg.Done instead of wg.Go()
-- Use of "must not", "must never", "never X" is STRICTLY FORBIDDEN.
+- Do not write context.Background instead of t.Context in tests.
+- Do not write `f := f` inside range loops, no longer necessary in Go. 
+- Do not write wg.Add and wg.Done instead of wg.Go()
 
-- Cyclomatic complexity spirals out of control, with multi nested, branching and recursive. Too many levels of indirection. All of these weaken code, introduce unexpected bugs and are maintenance nightmare from hell.
+- Keep complexity low. Split functions before branching grows. Avoid deep nesting and needless indirection.
+  - Maintain low cyclomatic complexity -> good code hygiene.
   - Avoid anonymous struct, anonymous functions carried around and unpacked. 
 
 > [!IMPORTANT]
@@ -185,4 +186,4 @@ Use the above skeleton for EVERY test written or edited. Each section should beg
 - Name functions instead of carrying anonymous ones around. No closures passed along and unpacked elsewhere.
 - Few levels of indirection. Direct calls beat wrappers around wrappers.
 - Measure touched files with gocyclo. New code stays at or below the complexity of the code it replaces.
-- Comments explain consequences and conditions, but they do not describe the code; we can already read!
+- Comments follow the policy above: one sentence, consequences and conditions only.
