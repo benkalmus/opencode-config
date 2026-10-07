@@ -9,9 +9,8 @@
     "permissions": "autoaccept",
     "grouping": "none"
   },
-  // sound when a question is asked.
   "attention": {
-    "sound": true
+    "sound": false
   },
   "keybinds": {
     "leader": "ctrl+b",
@@ -22,8 +21,12 @@
     "session.new": "ctrl+n",
     // closest V2 equivalent of the old tool_details toggle.
     "session.verbosity.cycle": "<leader>w",
-    "agent.cycle": ["shift+tab"],
-    "agent.cycle.reverse": ["tab"],
+    "agent.cycle": [
+      "shift+tab"
+    ],
+    "agent.cycle.reverse": [
+      "tab"
+    ],
     // ctrl+o now opens the model list, so the recent sessions menu loses its default.
     "open.menu": "none",
     // <leader>w now cycles transcript verbosity, so tab close loses its default.
@@ -31,5 +34,7 @@
     // ctrl+b is the leader key, so backgrounding loses its default.
     "session.background": "none"
   },
-  "plugins": ["/home/benkalmus/work/opencode-openrouter-stats"]
+  "plugins": [
+    "/home/benkalmus/work/opencode-openrouter-stats"
+  ]
 }

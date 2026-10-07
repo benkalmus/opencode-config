@@ -8,10 +8,10 @@ init:
 	@echo "Initializing submodules..."
 	@git submodule update --init --recursive
 
-stow: init backup
+stow: backup
 	@for pkg in $(PACKAGES); do \
 		echo "Stowing $$pkg..."; \
-		stow -v -R -t $(HOME) $$pkg; \
+		stow -v -R -t $(HOME) --ignore 'service\.json' --ignore 'cli\.json' $$pkg; \
 	done
 
 # Back up only genuine collisions: a real file standing under real directories.
@@ -36,7 +36,7 @@ backup:
 unstow:
 	@for pkg in $(PACKAGES); do \
 		echo "Unstowing $$pkg..."; \
-		stow -v -D -t $(HOME) $$pkg; \
+		stow -v -D -t $(HOME) --ignore 'service\.json' --ignore 'cli\.json' $$pkg; \
 	done
 
 restow: unstow stow
@@ -52,9 +52,10 @@ adopt:
 # changing settings in the TUI instead of letting the next restow collide.
 sync-cli:
 	@test -f $(HOME)/.config/opencode/cli.json || (echo "no live cli.json"; exit 1)
-	@if [ ! -L $(HOME)/.config/opencode/cli.json ]; then cp $(HOME)/.config/opencode/cli.json opencode/.config/opencode/cli.json; else echo "link intact, nothing to import"; fi
+	# @if [ ! -L $(HOME)/.config/opencode/cli.json ]; then cp $(HOME)/.config/opencode/cli.json opencode/.config/opencode/cli.json; else echo "link intact, nothing to import"; fi
 	@if [ ! -L $(HOME)/.config/opencode/cli.json ]; then rm $(HOME)/.config/opencode/cli.json; fi
-	@stow -R -t $(HOME) opencode
+	@stow -R -t $(HOME) --ignore 'service\.json' opencode
+	# @cp $(PWD)/opencode/.config/opencode/cli.json $(HOME)/.config/opencode/cli.json
 	@ls -l $(HOME)/.config/opencode/cli.json
 
 clean:
@@ -62,7 +63,7 @@ clean:
 	@printf "Proceed? [y/N] "; read ans; case "$$ans" in [yY]|[yY][eE][sS]) ;; *) echo "Aborted."; exit 1;; esac
 	@echo "Removing old symlinks..."
 	@for pkg in $(PACKAGES); do \
-		stow -v -D -t $(HOME) $$pkg 2>/dev/null; \
+		stow -v -D -t $(HOME) --ignore 'service\.json' --ignore 'cli\.json' $$pkg 2>/dev/null; \
 	done
 	@rm -f $(HOME)/.config/opencode/AGENTS.md \
 		$(HOME)/.config/opencode/dcp.jsonc \
