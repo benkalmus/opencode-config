@@ -46,6 +46,14 @@ When generating documents, comments, or any prose output, follow these rules.
 - Cannot run `sudo`. If required, present the exact line for user to run.
 - Cannot run commands as root without user.
 
+## Permission safeguards
+- Inline shell scripts (`python -c`, `node -e`, `node --eval`, heredocs) are disallowed as poor practice risking catastrophic failure.
+- Secret reads (SSH keys, credentials, `secrets.*`) and environment dumps (`env`, `printenv`) are blocked to prevent disclosure.
+- `git commit --no-verify` is blocked because skipping hooks bypasses validation.
+- `rm -f`, `rm -rf`, and `rm -fr` require approval because forced deletion risks data loss.
+- The `question` tool is disabled. Request clarification in normal responses instead.
+- Never bypass restrictions through another tool, command spelling, or script file. Briefly report the blocked action and reason.
+
 ## Git
 - Permission to push, pull, resolve conflicts, rebase, or merge blocked and denied.
 

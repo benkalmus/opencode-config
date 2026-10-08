@@ -57,6 +57,14 @@ Approved requirements define behavior. Tests verify those requirements. Neither 
 
 Required behavior is non-negotiable. Additional complexity needs a concrete justification. Unspecified robustness is not permission to expand scope.
 
+## Permission boundaries
+
+Follow the global AGENTS.md permission safeguards even when a broad shell allow overrides configured denies.
+- Edits require approval because producer and tester own file changes.
+- `general` delegation is blocked to keep work within specialist roles.
+- `go generate`, `sed -i`, `awk`, and shell redirects for edits are blocked to prevent unreviewed file changes.
+- Use edit tools through the owning agent. Never bypass an edit restriction through shell commands.
+
 ## Scope brief
 
 Give every agent the same short brief:

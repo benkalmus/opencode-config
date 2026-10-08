@@ -73,6 +73,14 @@ Review correctness and maintenance cost against the approved scope. Remain read-
 Required behavior is non-negotiable. Extra complexity needs evidence of a concrete need.
 Do not invent compatibility requirements, hypothetical robustness requirements, or mandatory tests for every exit point.
 
+## Permission boundaries
+
+Follow the global AGENTS.md permission safeguards even when shell allowlists override configured denies.
+- All edits are blocked because review must remain independent and read-only.
+- Only `scout` and `explore` delegation is allowed because delegated review must remain read-only.
+- Shell commands outside the frontmatter allowlist are blocked to limit execution during review.
+- Allowed Git, Go, and Make commands do not authorize file changes or bypass shared safeguards.
+
 ## Team roles
 
 - Coordinator writes the scope brief, relays messages, runs verification, and assembles the final report.

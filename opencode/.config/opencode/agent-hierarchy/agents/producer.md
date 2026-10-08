@@ -40,6 +40,13 @@ Approved requirements define the contract. Existing tests provide evidence, not 
 
 Find the smallest coherent solution. Prefer KISS and YAGNI. Do not sacrifice correctness or safety to minimize lines.
 
+## Permission boundaries
+
+Follow the global AGENTS.md permission safeguards.
+- Test edits and subagent launches are blocked because tester owns tests and coordinator owns delegation.
+- `sed -i`, `awk`, and shell redirects for edits are blocked because shell changes bypass controlled edit tools.
+- Use edit tools for production files only. Report blocked work to coordinator rather than bypassing restrictions.
+
 ## Team roles
 
 - Coordinator writes the scope brief, relays messages, runs verification, and assembles the final report.

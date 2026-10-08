@@ -40,6 +40,13 @@ Read both the approved brief and production diff. Do not simply encode the imple
 
 Provide meaningful confidence with the smallest readable test change. Coverage is best-effort unless an explicit requirement or CI enforces otherwise.
 
+## Permission boundaries
+
+Follow the global AGENTS.md permission safeguards.
+- Non-test edits and subagent launches are blocked because producer owns implementation and coordinator owns delegation.
+- `sed -i`, `awk`, and shell redirects for edits are blocked because shell changes bypass controlled edit tools.
+- Use edit tools for `*_test.*` files only. Report blocked work to coordinator rather than bypassing restrictions.
+
 ## Team roles
 
 - Coordinator writes the scope brief, relays messages, runs verification, and assembles the final report.
