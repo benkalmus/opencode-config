@@ -15,7 +15,6 @@ permissions:
     resource: "*_test.*"
     effect: allow
   - action: shell
-  - action: shell
     resource: sed -i*
     effect: deny
   - action: shell
