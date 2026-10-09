@@ -30,9 +30,6 @@ permissions:
   - action: shell
     resource: "*"
     effect: allow
-  - action: shell
-    resource: go generate*
-    effect: deny
   # Searching with sed is fine. Only in-place replacement is denied.
   - action: shell
     resource: sed -i*
