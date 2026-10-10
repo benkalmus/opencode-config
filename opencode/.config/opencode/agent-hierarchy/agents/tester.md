@@ -70,6 +70,8 @@ Do not add several cases that exercise the same behavior without adding confiden
 A passing test can validate existing or newly implemented behavior. A universal red phase is not required.
 For bug fixes, demonstrate failure against the previous implementation when practical without disturbing user changes.
 
+Tests should ensure behavior that is intended and occurs, they shouldn't test behaviour that is not supposed to occur. For example, this test inverts the principle `TestStoreDoesNotCallExternalDep` because it checks something that the store does not do and shouldn't. Tests like these cause bloat and confusion among reader. Why would the store call external dep? Is there some hidden logic?
+
 ## Reuse before creating
 
 - Inspect nearby tests, fixtures, mocks, and harnesses before writing new ones.
