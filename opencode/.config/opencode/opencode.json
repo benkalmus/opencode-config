@@ -233,69 +233,137 @@
       },
       "models": {
         "gpt-6.1-sol": {
-          "name": "GPT-6.1 Sol"
+          "name": "GPT-6.1 Sol",
+          "limit": {
+            "context": 1050000,
+            "output": 128000
+          }
         },
         "gpt-6-astra": {
-          "name": "GPT-6 Astra"
+          "name": "GPT-6 Astra",
+          "limit": {
+            "context": 1050000,
+            "output": 128000
+          }
         },
         "codex-auto-review": {
           "name": "Codex Auto Review"
         },
         "gpt-5.5": {
-          "name": "GPT-5.5"
+          "name": "GPT-5.5",
+          "limit": {
+            "context": 1050000,
+            "output": 128000
+          }
         },
         "gpt-5.6-sol": {
-          "name": "GPT-5.6 Sol"
+          "name": "GPT-5.6 Sol",
+          "limit": {
+            "context": 1050000,
+            "output": 128000
+          }
         },
         "gpt-5.6-terra": {
-          "name": "GPT-5.6 Terra"
+          "name": "GPT-5.6 Terra",
+          "limit": {
+            "context": 1050000,
+            "output": 128000
+          }
         },
         "gpt-6-sol": {
-          "name": "GPT-6 Sol"
+          "name": "GPT-6 Sol",
+          "limit": {
+            "context": 1050000,
+            "output": 128000
+          }
         },
         "claude-fable-5-1": {
           "name": "Claude Fable 5.1",
-          "package": "@opencode/ai/providers/anthropic-compatible"
+          "package": "@opencode/ai/providers/anthropic-compatible",
+          "limit": {
+            "context": 1000000,
+            "output": 128000
+          }
         },
         "claude-fable-5": {
           "name": "Claude Fable 5",
-          "package": "@opencode/ai/providers/anthropic-compatible"
+          "package": "@opencode/ai/providers/anthropic-compatible",
+          "limit": {
+            "context": 1000000,
+            "output": 128000
+          }
         },
         "claude-haiku-4-5-20251001": {
           "name": "Claude Haiku 4.5 20251001",
-          "package": "@opencode/ai/providers/anthropic-compatible"
+          "package": "@opencode/ai/providers/anthropic-compatible",
+          "limit": {
+            "context": 200000,
+            "output": 64000
+          }
         },
         "claude-opus-4-6": {
           "name": "Claude Opus 4.6",
-          "package": "@opencode/ai/providers/anthropic-compatible"
+          "package": "@opencode/ai/providers/anthropic-compatible",
+          "limit": {
+            "context": 1000000,
+            "output": 128000
+          }
         },
         "claude-opus-4-7": {
           "name": "Claude Opus 4.7",
-          "package": "@opencode/ai/providers/anthropic-compatible"
+          "package": "@opencode/ai/providers/anthropic-compatible",
+          "limit": {
+            "context": 1000000,
+            "output": 128000
+          }
         },
         "claude-opus-4-8": {
           "name": "Claude Opus 4.8",
-          "package": "@opencode/ai/providers/anthropic-compatible"
+          "package": "@opencode/ai/providers/anthropic-compatible",
+          "limit": {
+            "context": 1000000,
+            "output": 128000
+          }
         },
         "claude-opus-5": {
           "name": "Claude Opus 5",
-          "package": "@opencode/ai/providers/anthropic-compatible"
+          "package": "@opencode/ai/providers/anthropic-compatible",
+          "limit": {
+            "context": 1000000,
+            "output": 128000
+          }
         },
         "claude-opus-5-5": {
           "name": "Claude Opus 5.5",
-          "package": "@opencode/ai/providers/anthropic-compatible"
+          "package": "@opencode/ai/providers/anthropic-compatible",
+          "limit": {
+            "context": 1000000,
+            "output": 128000
+          }
         },
         "claude-sonnet-4-6": {
           "name": "Claude Sonnet 4.6",
-          "package": "@opencode/ai/providers/anthropic-compatible"
+          "package": "@opencode/ai/providers/anthropic-compatible",
+          "limit": {
+            "context": 1000000,
+            "output": 128000
+          }
         },
         "claude-sonnet-5": {
           "name": "Claude Sonnet 5",
-          "package": "@opencode/ai/providers/anthropic-compatible"
+          "package": "@opencode/ai/providers/anthropic-compatible",
+          "limit": {
+            "context": 1000000,
+            "output": 128000
+          }
         },
         "claude-sonnet-5-5": {
           "name": "Claude Sonnet 5.5",
-          "package": "@opencode/ai/providers/anthropic-compatible"
+          "package": "@opencode/ai/providers/anthropic-compatible",
+          "limit": {
+            "context": 1000000,
+            "output": 128000
+          }
         },
         "deepseek-v4.1-flash": {
           "name": "DeepSeek V4.1 Flash",
