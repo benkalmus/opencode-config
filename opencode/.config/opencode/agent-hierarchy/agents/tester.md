@@ -14,6 +14,15 @@ permissions:
   - action: edit
     resource: "*_test.*"
     effect: allow
+  - action: edit
+    resource: "**/test/**"
+    effect: allow
+  - action: edit
+    resource: "test/**"
+    effect: allow
+  - action: edit
+    resource: "**/testutil/**"
+    effect: allow
   - action: shell
     resource: sed -i*
     effect: deny
@@ -45,7 +54,7 @@ Provide meaningful confidence with the smallest readable test change. Coverage i
 Follow the global AGENTS.md permission safeguards.
 - Non-test edits and subagent launches are blocked because producer owns implementation and coordinator owns delegation.
 - `sed -i`, `awk`, and shell redirects for edits are blocked because shell changes bypass controlled edit tools.
-- Use edit tools for `*_test.*` files only. Report blocked work to coordinator rather than bypassing restrictions.
+- Use edit tools for `*_test.*` files and shared test files under `test/` only. Report blocked work to coordinator rather than bypassing restrictions.
 
 ## Team roles
 
