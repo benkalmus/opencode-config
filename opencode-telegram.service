@@ -6,7 +6,7 @@ Wants=network-online.target
 [Service]
 Type=simple
 WorkingDirectory=/home/benkalmus/
-ExecStart=/bin/sh -c 'opencode serve & SERVER_PID=$!; trap "kill $SERVER_PID" TERM INT; npx @grinev/opencode-telegram-bot; kill $SERVER_PID'
+ExecStart=/bin/sh -c 'opencode service start; npx @grinev/opencode-telegram-bot'
 Restart=always
 RestartSec=30
 EnvironmentFile=/home/benkalmus/.config/.env
