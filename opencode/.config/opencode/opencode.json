@@ -42,6 +42,22 @@
           "CAMOFOX_URL": "http://localhost:9377",
         },
       },
+      // foxbrowser: separate Firefox instance with profile copy. Launches an isolated
+      // Firefox with your cookies, logins, and extensions from the locked profile
+      // (auto-copied to temp). Your running Firefox stays untouched.
+      // Profile: ~/.config/mozilla/firefox/lrxn5unl.default-release
+      "foxbrowser": {
+        "disabled": true,
+        "type": "local",
+        "command": [
+          "npx",
+          "-y",
+          "foxbrowser"
+        ],
+        "environment": {
+          "FOXBROWSER_PROFILE": "/home/benkalmus/.config/mozilla/firefox/lrxn5unl.default-release"
+        }
+      },
       "engram": {
         "disabled": true,
         "command": [
