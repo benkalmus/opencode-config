@@ -219,6 +219,97 @@
           }
         }
       }
+    },
+    // Discount reseller, unverified: fingerprint a model before trusting it.
+    "routerhub": {
+      "name": "RouterHub",
+      "package": "@opencode/ai/providers/openai",
+      "settings": {
+        "apiKey": "{env:ROUTERHUB_API_KEY}",
+        "baseURL": "https://routerhub.si/v1",
+        "timeout": 600000,
+        "headerTimeout": 600000,
+        "chunkTimeout": 600000
+      },
+      "models": {
+        "gpt-6.1-sol": {
+          "name": "GPT-6.1 Sol"
+        },
+        "gpt-6-astra": {
+          "name": "GPT-6 Astra"
+        },
+        "codex-auto-review": {
+          "name": "Codex Auto Review"
+        },
+        "gpt-5.5": {
+          "name": "GPT-5.5"
+        },
+        "gpt-5.6-sol": {
+          "name": "GPT-5.6 Sol"
+        },
+        "gpt-5.6-terra": {
+          "name": "GPT-5.6 Terra"
+        },
+        "gpt-6-sol": {
+          "name": "GPT-6 Sol"
+        },
+        "claude-fable-5-1": {
+          "name": "Claude Fable 5.1",
+          "package": "@opencode/ai/providers/anthropic-compatible"
+        },
+        "claude-fable-5": {
+          "name": "Claude Fable 5",
+          "package": "@opencode/ai/providers/anthropic-compatible"
+        },
+        "claude-haiku-4-5-20251001": {
+          "name": "Claude Haiku 4.5 20251001",
+          "package": "@opencode/ai/providers/anthropic-compatible"
+        },
+        "claude-opus-4-6": {
+          "name": "Claude Opus 4.6",
+          "package": "@opencode/ai/providers/anthropic-compatible"
+        },
+        "claude-opus-4-7": {
+          "name": "Claude Opus 4.7",
+          "package": "@opencode/ai/providers/anthropic-compatible"
+        },
+        "claude-opus-4-8": {
+          "name": "Claude Opus 4.8",
+          "package": "@opencode/ai/providers/anthropic-compatible"
+        },
+        "claude-opus-5": {
+          "name": "Claude Opus 5",
+          "package": "@opencode/ai/providers/anthropic-compatible"
+        },
+        "claude-opus-5-5": {
+          "name": "Claude Opus 5.5",
+          "package": "@opencode/ai/providers/anthropic-compatible"
+        },
+        "claude-sonnet-4-6": {
+          "name": "Claude Sonnet 4.6",
+          "package": "@opencode/ai/providers/anthropic-compatible"
+        },
+        "claude-sonnet-5": {
+          "name": "Claude Sonnet 5",
+          "package": "@opencode/ai/providers/anthropic-compatible"
+        },
+        "claude-sonnet-5-5": {
+          "name": "Claude Sonnet 5.5",
+          "package": "@opencode/ai/providers/anthropic-compatible"
+        },
+        "deepseek-v4.1-flash": {
+          "name": "DeepSeek V4.1 Flash",
+          "package": "@opencode/ai/providers/openai-compatible"
+        },
+        "glm-5.3": {
+          "name": "GLM 5.3",
+          "package": "@opencode/ai/providers/openai-compatible"
+        },
+        "glm-5.3-flash": {
+          "name": "GLM 5.3 Flash",
+          "package": "@opencode/ai/providers/openai-compatible"
+        }
+      }
     }
   },
   // Glob rules: * matches everything including /. ? matches exactly one char. Last matching rule wins.
