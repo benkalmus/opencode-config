@@ -76,7 +76,7 @@ journalctl --user -u remote-opencode.service -f
 
 ### Telegram bot
 
-Uses [opencode-telegram-bot](https://github.com/grinev/opencode-telegram-bot). Runs both `opencode serve` and the Telegram bot in a single service.
+Uses [opencode-telegram-bot](https://github.com/grinev/opencode-telegram-bot). Starts the OpenCode V2 background service and the Telegram bot in a single service.
 
 1. Install the bot's dependencies and run initial config wizard:
 
@@ -84,13 +84,23 @@ Uses [opencode-telegram-bot](https://github.com/grinev/opencode-telegram-bot). R
 npx @grinev/opencode-telegram-bot
 ```
 
-2. Symlink the service file:
+2. Configure the bot for OpenCode V2 in `~/.config/opencode-telegram-bot/.env`:
+
+```env
+OPENCODE_SERVER_VERSION=v2
+OPENCODE_API_URL=http://127.0.0.1:49374
+OPENCODE_SERVER_PASSWORD=<output of `opencode service get password`>
+```
+
+The password is stored in `~/.config/opencode/service.json` and survives restarts. Set your own with `opencode service set password <value>` (this stops the background service once). The standalone `opencode serve` prints a new password on every start, so point the bot at the background service, not a standalone server.
+
+3. Symlink the service file:
 
 ```sh
 ln -snf $(pwd)/opencode-telegram.service ~/.config/systemd/user/opencode-telegram.service
 ```
 
-3. Start and enable:
+4. Start and enable:
 
 ```sh
 systemctl --user daemon-reload
@@ -100,7 +110,7 @@ systemctl --user enable --now opencode-telegram
 loginctl enable-linger $(whoami)
 ```
 
-4. Check status / logs:
+5. Check status / logs:
 
 ```sh
 systemctl --user status opencode-telegram
