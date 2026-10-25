@@ -52,11 +52,10 @@ adopt:
 # changing settings in the TUI instead of letting the next restow collide.
 sync-cli:
 	@test -f $(HOME)/.config/opencode/cli.json || (echo "no live cli.json"; exit 1)
-	# @if [ ! -L $(HOME)/.config/opencode/cli.json ]; then cp $(HOME)/.config/opencode/cli.json opencode/.config/opencode/cli.json; else echo "link intact, nothing to import"; fi
-	@if [ ! -L $(HOME)/.config/opencode/cli.json ]; then rm $(HOME)/.config/opencode/cli.json; fi
+	@if [ ! -L $(HOME)/.config/opencode/cli.json ]; then cp $(PWD)/opencode/.config/opencode/cli.json $(HOME)/.config/opencode/cli.json; else echo "link intact, nothing to import"; fi
 	@stow -R -t $(HOME) --ignore 'service\.json' opencode
 	# @cp $(PWD)/opencode/.config/opencode/cli.json $(HOME)/.config/opencode/cli.json
-	@ls -l $(HOME)/.config/opencode/cli.json
+	# @ls -l $(HOME)/.config/opencode/cli.json
 
 clean:
 	@echo "WARNING: This will remove opencode config symlinks from \$$HOME."
