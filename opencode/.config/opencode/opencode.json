@@ -156,6 +156,14 @@
             "context": 1048576,
             "output": 65536
           }
+        },
+        "anthropic/claude-haiku-5.5": {
+          "name": "Claude Haiku 5.5",
+          "body": {
+            "cache_control": {
+              "type": "ephemeral"
+            }
+          }
         }
       }
     },
