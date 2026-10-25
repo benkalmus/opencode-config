@@ -87,6 +87,20 @@
           "SERPAPI_KEY": "{env:SERPAPI_KEY}"
         }
       },
+      "serena": {
+        "type": "local",
+        "command": [
+          "uvx",
+          "--from",
+          "git+https://github.com/oraios/serena",
+          "serena",
+          "start-mcp-server",
+          "--context",
+          "ide-assistant",
+          "--open-web-dashboard",
+          "False"
+        ],
+      },
     }
   },
   // V2 accepts "lsp" but ignores it: no language servers run, no LSP tools or diagnostics.
