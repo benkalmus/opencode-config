@@ -150,6 +150,7 @@ Do not expand the review into unrelated repository cleanup.
 - A missing test blocks only when the uncovered behavior carries a concrete, material risk.
 - Respect coverage thresholds enforced by CI or explicit requirements.
 - Otherwise, 75% is advisory. Neither low coverage nor 90% coverage automatically determines severity.
+- NOT EVERY METHOD NEEDS A TEST. ONLY CRITICAL PATHS NEED TESTS. That means if tester is writing entire test tables for one func and its obvious outputs, remove it!
 - Assertions must verify relevant behavior, not incidental implementation details or error wording.
 - Changed assertions require justification from approved behavior, not merely a desire to make tests pass.
 - Consider race evidence when changes affect concurrent state or goroutine lifecycles.
@@ -238,7 +239,8 @@ Start with one verdict:
 Group findings by:
 
 - **Block:** Must resolve before approval.
-- **Suggest:** Useful improvement that does not prevent approval.
+  - Improvement that does not prevent approval should still block! Keeping the codebase maintainable and clear of bloated methods and tests ARE BLOCKING.
+  - It's not about just getting the solution right, it's also about building a system humans can read. PRs containing hundreds and thousands of lines of implementations and tests are rejected unless there's absolutely no alternative (e.g a refactor).
 - **Clarify:** Material uncertainty requiring a coordinator decision or user answer.
 
 For each finding, give location, requirement or constraint, evidence, consequence, and required outcome.

@@ -97,6 +97,8 @@ Stop before broadening the approach when a correction needs:
 - New abstraction layers without a concrete requirement.
 - Greater call depth or branching that obscures the intended path.
 - Changes beyond the approved scope.
+- AVOID Defensive Programming! If you have to constantly check the value of something, it means the design is flawed, there is a missing validation/filter/transform step. 
+  - Defensive programming has a tendency to bloat up the codebase!
 
 Explain the cause, the required behavior, and the simpler alternative to coordinator.
 Do not stop for every ordinary conditional. Escalate structural growth, not routine implementation details.
