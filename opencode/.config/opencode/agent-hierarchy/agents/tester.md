@@ -151,25 +151,23 @@ If the actual repository lacks this fixture, adapt existing tests or use a small
 Do not introduce a generic harness or production interface to reproduce this example's method names.
 
 The tests use `context`, `errors`, `sync`, `testing`, `time`, `testify/assert`, and `testify/require`.
-The named case types only hold visible inputs and expected results. They carry no setup or assertion callbacks.
+Case structs only hold visible inputs and expected results. They carry no setup or assertion callbacks.
 
 ### Ordered results and changed key handling
 
 ```go
-type loadCase struct {
-	name  string
-	keys  []string
-	limit int
-	want  []Record
-}
 
 func TestLoadAll_Results(t *testing.T) {
 	// Initial setup
 	alpha := Record{Key: "alpha", Value: "one"}
 	beta := Record{Key: "beta", Value: "two"}
 
-	// Define testcases
-	cases := []loadCase{
+	cases := []struct {
+		name  string
+		keys  []string
+		limit int
+		want  []Record
+	}{
 		{
 			name:  "input order",
 			keys:  []string{"beta", "alpha"},
@@ -189,8 +187,6 @@ func TestLoadAll_Results(t *testing.T) {
 			want:  []Record{},
 		},
 	}
-
-	// For each testcase
 	for _, tc := range cases {
 		t.Run(tc.name, func(t *testing.T) {
 			// per testcase setup
@@ -210,19 +206,17 @@ func TestLoadAll_Results(t *testing.T) {
 ### Representative input errors with the same assertions
 
 ```go
-type loadErrorCase struct {
-	name  string
-	keys  []string
-	limit int
-	want  error
-}
-
 func TestLoadAll_RejectsInput(t *testing.T) {
 	// Initial setup
 	keys := []string{"alpha"}
 
 	// Define testcases
-	cases := []loadErrorCase{
+	cases := []struct {
+		name  string
+		keys  []string
+		limit int
+		want  error
+	}{
 		{
 			name:  "invalid limit",
 			keys:  keys,
