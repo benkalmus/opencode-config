@@ -1,3 +1,4 @@
 *.env
 node_modules
 /opencode/.config/opencode/service.json
+/opencode/.config/opencode/scripts/__pycache__
