@@ -181,13 +181,13 @@ Every test you write or edit uses one of those two skeletons. Sections start wit
 - Restating the code is not a comment.
 - No `NOTE:` or `INFO:` tag by default. Tag when the fact is non-obvious and a reader would misread the code.
 
-These pass the bar:
+This passes the bar:
 
 ```go
 // NOTE: losers adopt the winner's state and delete their own initial source file, otherwise it's orphaned.
 ```
 
-Each states a consequence invisible at the call site. Delete either and a competent reader concludes the code already handles it.
+It states a consequence invisible at the call site. Delete it and a competent reader concludes the code already handles it.
 
 ## Naming
 
