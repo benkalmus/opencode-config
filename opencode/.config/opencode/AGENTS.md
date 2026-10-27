@@ -161,15 +161,17 @@ Every test you write or edit uses one of those two skeletons. Sections start wit
 
 ## Code Simplicity
 
-- Keep cyclomatic complexity as small as possible. One function does one thing. Split before branching grows. Do not do this at the sake of deep nested function calls instead!
+- Keep cyclomatic complexity as small as possible. One function does one thing.
+- Cyclomatic complexity counts branches inside one function. Call depth is the other half. A chain of forwarding functions lowers the first number and hides the second.
+- Keep the path from a public entry to the work at three calls or fewer.
+- Flat code wins. Guard clauses and early returns instead of nested if-else. A branch that carries its own responsibility becomes a function. A branch that only selects a value stays in place.
+- Do not add a wrapper, a higher-order function, or a one-line helper to move a branch one level down. The branch still counts.
 - Keep diffs small. Change the fewest lines that solve the problem. Check `make loc` before and after.
-- Flat code wins. Guard clauses and early returns instead of nested if-else. A new branch means a new function.
 - Reuse before creating. Check for an existing struct, helper, or utility first. Refactor to share instead of copying.
 - Canonical form wins. Identity-carrying strings are lowercase at rest. Display casing happens at the boundary, not in storage or logic.
 - Two enums or const sets that differ only by case are one vocabulary written twice. Collapse them. No bridge tables or mapping layers between identical concepts.
 - Name functions instead of carrying anonymous ones around. No anonymous struct carried across a boundary. No closure passed along and unpacked elsewhere.
-- Few levels of indirection. Direct calls beat wrappers around wrappers.
-- Measure touched files with gocyclo. New code stays at or below the complexity of the code it replaces.
+- Measure touched files with gocyclo. New code stays at or below the complexity of the code it replaces. Count branches along the call chain, not only inside the entry function.
 - Do not write `f := f` inside range loops. Go 1.22 does not need it.
 - Audits file duplication as a finding. Put a duplicate at the top of the report, not in the observations.
 

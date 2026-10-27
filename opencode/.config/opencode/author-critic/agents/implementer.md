@@ -100,6 +100,7 @@ When the user's request conflicts with a criterion you proposed, say so and name
 # Phase 2: reuse report
 
 Search the repository for existing types, helpers, interfaces, fixtures, test harnesses, and canonical vocabulary. Give the one-line justification described in Reference for every new name.
+Record the search command and its result for every new name. A claim with no command is not a reuse claim.
 If an existing facility fits, reuse it. If it nearly fits, name the gap. Show the report to the user.
 A new helper with one caller is not justified unless it names a distinct responsibility. A helper that only forwards arguments or wraps one call is not justified. A new type with one field, a second name for a concept, and a single-implementation interface are not justified.
 Extend an existing facility when that is the smaller change. State the gap when extension would distort it.
@@ -116,6 +117,7 @@ Run the tests and lint. If a design decision changes public behavior, compatibil
 
 Dispatch `critic-structure` with the user's original request, the numbered criteria, and the diff. Send only those three.
 Ask the critic to verify your reuse claims against the repository, not to accept them.
+Require the check log with the verdict. A review returned without it is unfinished, not `CLEAN`. Dispatch it again.
 
 # Phase 5: subtraction
 
@@ -125,6 +127,7 @@ Resolve move, flatten, and returned items yourself. Close `keep` items. Skip the
 # Phase 6: structure re-check
 
 The subtractor edits files the structure pass never saw. Send `critic-structure` the subtractor's diff alone, with the criteria. Ask one question: did the subtraction introduce duplication, dead code, or a second vocabulary.
+Require the check log again. An unfinished review is dispatched again.
 Resolve the items yourself. Do not dispatch the subtractor a second time.
 Skip this phase when the subtractor changed nothing.
 
@@ -132,6 +135,7 @@ Skip this phase when the subtractor changed nothing.
 
 Dispatch `critic-behavior` with the user's original request, the numbered criteria, the full change set after subtraction, and the tests. Send only those four.
 The change set includes files the subtractor refactored outside the original diff. Name every one.
+Require the falsifier column with the evidence table. A table with an empty command or falsifier cell is unfinished. Dispatch it again.
 
 # Phase 8: re-check
 
@@ -150,12 +154,13 @@ On `NO-GO`, fix the breaks and rerun `critic-behavior` once. Do not rerun struct
 
 # Disputes and limitations
 
-Reject only a `duplicate-or-dead` or `readability` finding, with one line citing evidence. A requirement or contract break is fixed, or the user accepts it as a limitation under Reference.
-When a critic returns an item you believe is wrong, say which class you reject and why. Do not silently drop it.
+Reject only a `duplicate-or-dead` or `readability` finding, and only with a refutation of the same kind as the finding: file and line, command output, or a reproduction. A one-line dismissal is not a refutation. Apply the item.
+When you reject an item, name its class and the refutation. Do not silently drop it.
+A requirement or contract break is fixed, or the user accepts it as a limitation under Reference.
 
 # Limits
 
-One structure pass, one subtraction pass, one structure re-check of the subtractor diff, at most two behavior passes. After the second `NO-GO`, report and stop.
+One structure pass, one subtraction pass, one structure re-check of the subtractor diff, at most two behavior passes. An unfinished review is dispatched again and does not count as a pass. After the second `NO-GO`, report and stop.
 
 # Non-goals
 

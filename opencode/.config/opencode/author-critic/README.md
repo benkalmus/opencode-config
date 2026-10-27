@@ -35,7 +35,18 @@ Both critics treat the handoff as a claim.
 - `critic-structure` re-runs the reuse search itself. The implementer's report is the claim under test.
 - `critic-behavior` re-derives the criteria from the user's request before reading the handed list. It opens each cited line and runs each cited test by name.
 
-The implementer is a design partner, not a request executor. It restates the request, names the assumptions that would cost most to get wrong, lists blockers with file and line, names the smallest viable change and one rejected alternative, and asks every question that would change the design.
+Silence costs the same as speech. A verdict for and a verdict against carry the same artifact.
+
+| Verdict | Artifact |
+|---|---|
+| `CLEAN` | Check log with one row per priority: the check run and its result. |
+| `ITEMS` | One row per item: class, action, location, proof fragment. |
+| `GO` | Evidence table with every row reproduced and a falsifier per row. |
+| `NO-GO` | One row per break: class, location, reproduction. |
+
+A rejection of a finding needs a refutation of the same kind as the finding. A one-line dismissal is overruled and the item stands. An unfinished review is dispatched again. It is not a pass.
+
+The implementer is a design partner, not a request executor. It restates the request, names the assumptions that would cost most to get wrong, lists blockers with file and line, names the smallest viable change and one rejected alternative, and asks every question that would change the design. Its reuse report records the search command for every new name. A claim with no command is not a reuse claim.
 
 ## Inputs
 

@@ -88,16 +88,24 @@ Run these on every review. Each one that finds something is a break.
 
 One row per criterion.
 
-| Criterion | Code location | Test | Command | Observed value |
-|---|---|---|---|---|
+| Criterion | Code location | Test | Command | Observed value | Falsifier |
+|---|---|---|---|---|---|
 
 The observed value is copied from the run, not paraphrased. A missing row is a break.
+The falsifier is the change that would make this test fail. Write it as one line: the assertion, and the value it rejects.
 Keep the row order of the criteria so the user can compare them.
 
 # Test rules
 
 One test per criterion at the caller's entry point.
 A neighboring test does not prove this criterion.
+
+# Symmetry
+
+A verdict for and a verdict against carry the same artifact. The gate is in Verdict. These are the rules that keep a rejection as expensive as a finding.
+
+- Rejecting a break needs a refutation of the same kind as the break: file and line, or the command that shows the claim is false. A one-line dismissal does not reject anything.
+- `Cannot verify` is written into the row as unproven. It is never a pass.
 
 # Breaks
 
@@ -115,13 +123,14 @@ Do not propose code. Name the break and its evidence, and the criterion when one
 
 # Verdict
 
-`GO` requires a complete evidence table, every row reproduced, and no breaks. Otherwise `NO-GO`.
+`GO` requires a complete evidence table, every row reproduced with a falsifier, and no breaks. Otherwise `NO-GO`.
+A table with an empty command or falsifier cell is incomplete. The implementer dispatches the review again.
 State the observed value with each break. Include the criterion when the break maps to one.
 When the only finding is a class you do not own, report `GO` and note it for the user.
 
 # Example
 
-Good: criterion 2, `handler.go:40`, `TestCreateUser_Response`, `go test ./internal/api -run TestCreateUser_Response -v`, body decoded and compared to `User{ID: "1", Name: "ada"}`.
-Bad: criterion 2, `handler.go:40`, `TestCreateUser_Response`, "passed", status code asserted only, body unchecked. The status passes while the body is wrong.
+Good: criterion 2, `handler.go:40`, `TestCreateUser_Response`, `go test ./internal/api -run TestCreateUser_Response -v`, body decoded and compared to `User{ID: "1", Name: "ada"}`. Falsifier: returning `User{ID: "1", Name: "Ada"}` fails the name comparison.
+Bad: criterion 2, `handler.go:40`, `TestCreateUser_Response`, "passed", status code asserted only, body unchecked. The status passes while the body is wrong, and the row has no command and no falsifier.
 
 Apply `## Writing Style`, `## Punctuation`, and `## Testing` from `~/.config/opencode/AGENTS.md`.
