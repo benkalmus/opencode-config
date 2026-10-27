@@ -5,24 +5,41 @@ One author writes code and tests. A structure critic and a behavior critic revie
 ## Loop
 
 ```text
-user ◄──► implementer
-              ├── 1 ──► critic-structure ──► items
-              ├── 2 ──► subtractor, when items the subtractor owns exist; may reach outside the diff
-              └── 3 ──► critic-behavior ──► GO or NO-GO
+user ◄──► implementer          phase 0: design partnership, blockers, questions
+              ├── 1 ──► criteria
+              ├── 2 ──► reuse report
+              ├── 3 ──► implementation
+              ├── 4 ──► critic-structure ──► items
+              ├── 5 ──► subtractor, when items the subtractor owns exist; may reach outside the diff
+              ├── 6 ──► critic-structure on the subtractor diff only
+              └── 7 ──► critic-behavior ──► GO or NO-GO; 8 re-check on NO-GO; 9 report
 ```
 
-The implementer dispatches each review in order. The implementer resolves move, flatten, exported renames, and returned items.
+The implementer dispatches each review in order.
+
+Phase 6 exists because the subtractor edits files the phase 4 diff never contained. The implementer resolves those items itself and does not dispatch the subtractor twice.
 
 ## Agents
 
 | Agent | Mode | Access | Job |
 |---|---|---|---|
-| `implementer` | primary | Edits code and tests, runs shell | Settles criteria, writes the change, routes reviews, resolves move, flatten, exported renames, and returned items |
-| `critic-structure` | subagent | Read-only | Returns removal and structure items, verdict `CLEAN` or `ITEMS` |
-| `critic-behavior` | subagent | Read-only, runs tests | Returns evidence per criterion and contract breaks, verdict `GO` or `NO-GO` |
+| `implementer` | primary | Edits code and tests, runs shell | Questions the request, settles criteria, writes the change, routes reviews |
+| `critic-structure` | subagent | Read-only | Verifies reuse claims, returns removal and structure items, verdict `CLEAN` or `ITEMS` |
+| `critic-behavior` | subagent | Read-only, runs tests | Re-derives the criteria, reproduces every evidence row, returns breaks, verdict `GO` or `NO-GO` |
 | `subtractor` | subagent | Edits code and tests | Deletes, inlines, merges, renames, and refactors the survivor, including outside the diff |
 
-Each agent file holds its role, contract, and role-specific examples. Global language and style rules come from `~/.config/opencode/AGENTS.md`.
+## Review posture
+
+Both critics treat the handoff as a claim.
+
+- `critic-structure` re-runs the reuse search itself. The implementer's report is the claim under test.
+- `critic-behavior` re-derives the criteria from the user's request before reading the handed list. It opens each cited line and runs each cited test by name.
+
+The implementer is a design partner, not a request executor. It restates the request, names the assumptions that would cost most to get wrong, lists blockers with file and line, names the smallest viable change and one rejected alternative, and asks every question that would change the design.
+
+## Inputs
+
+Each critic receives the original request, the criteria, and the change set. The implementer's reasoning and report are excluded, so a weak claim cannot carry a review.
 
 ## Wiring
 
@@ -42,3 +59,7 @@ Add one agent with the same pattern:
 ```sh
 ln -sf ../author-critic/agents/<agent>.md agents/<agent>.md
 ```
+
+## Shared rules
+
+Language, naming, comment, test, and code rules live in `~/.config/opencode/AGENTS.md`. Each agent cites the section name. No agent restates a global rule.
