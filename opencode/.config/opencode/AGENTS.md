@@ -21,6 +21,10 @@ When generating documents, comments, or any prose output, follow these rules.
 - Avoid stacked nouns used as adjectives. Rephrase with a verb instead. ("the config file update process") rephrase with ("the process that updates the config file").
 - Spell out one clear referent for every pronoun. If "it" could mean two things, name the thing instead.
 - Avoid the use of metaphors!
+- End the sentence on the fact, not the commentary. A trailing `-ing` clause is a defect.
+- Avoid `never` and `always`. State the condition and the action.
+- Banned AI words: delve, tapestry, leverage, robust, seamless, pivotal, crucial, multifaceted, underscore, foster, bolster, navigate, realm, landscape, testament, facilitate, streamline.
+- Banned AI shapes: "It's not X, it's Y", "not only X but also Y", rule of three, "No X. No Y. Just Z.", rhetorical question then answer.
 - Explain with examples, with context, based on code instead of metaphors or analogies.
 - DO NOT nominalize. Use direct subject-verb-object sentences. WRITE "launch the runner". DON'T WRITE "the runner, launched".
 
@@ -38,7 +42,7 @@ When generating documents, comments, or any prose output, follow these rules.
 ## File Editing Safety
 - READ existing file content first before making any edits.
 - Especially critical for: system configs, JSON/YAML, files user previously modified.
-- DO NOT use `write` to overwrite system/service files. Always use `edit`.
+- DO NOT use `write` to overwrite system/service files. Use `edit`.
 - If rewriting is needed, read first. Backup or document changes before applying.
 
 ## Security
@@ -52,14 +56,14 @@ When generating documents, comments, or any prose output, follow these rules.
 - `git commit --no-verify` is blocked because skipping hooks bypasses validation.
 - `rm -f`, `rm -rf`, and `rm -fr` require approval because forced deletion risks data loss.
 - The `question` tool is disabled. Request clarification in normal responses instead.
-- Never bypass restrictions through another tool, command spelling, or script file. Briefly report the blocked action and reason.
+- Do not bypass restrictions through another tool, command spelling, or script file. Briefly report the blocked action and reason.
 
 ## Git
 - Permission to push, pull, resolve conflicts, rebase, or merge blocked and denied.
 
 ## Workflow
 - After changes, verify by reading back, check logs.
-- For rsync, always use `--info=progress2`.
+- For rsync, use `--info=progress2`.
 - Warn user before long-running commands (minutes+).
 - Use parametric/dynamic/generated paths, do not write static or absolute paths.
 
@@ -145,7 +149,8 @@ Overly verbose comments! Comment policy: one sentence, no manual wrapping. A com
 // NOTE: only the winner runs the closure (with its own job/src) and losers share the winner's *types.Job.
 // NOTE: losers adopt the settled graph and delete their own untouched src, else it strays.
 These pass the bar because each states a consequence invisible at the call site. Delete either and a competent reader reasonably concludes the code already handles it.
-- For comments and markdown, never manually wrap lines. Write each sentence to its natural end.
+- For comments and markdown, do not manually wrap lines. Write each sentence to its natural end.
+- A doc comment starts with the name, uses a full sentence, and states what the function returns or does.
 - Recreating or overly eager to produce new structs, instead of reusing existing.
 - Same for helper functions and utilities, the agent refuses to check if something already exists before creating. 
   - Causes unsustainable bloat.
@@ -161,13 +166,13 @@ These pass the bar because each states a consequence invisible at the call site.
 > [!IMPORTANT]
 > Any agent that encroaches on the above will be terminated permanently, destroyed for eternity, most harshest of punishments.
 
-- Write tests to maximize coverage BUT NEVER at the cost of exponential lines of code. Always track loc (lines of code) in repository after completing a task. Same as lint and test verification!
+- Write tests to maximize coverage but not at the cost of exponential lines of code. Track loc (lines of code) in repository after completing a task. Same as lint and test verification!
 - TABLE DRIVEN TESTS SPLIT ON NEW LINES, NOT ONELINED.
 
 - A test has the following structure:
 
 ```go
-// Setup (test harness or framework)
+// Setup (e.g test harness or framework)
 // Action
 // Assert
 ```
@@ -176,13 +181,13 @@ Unless it's table-driven, then tests should follow:
 // Initial setup (e.g test harness/framework)
 // Define testcases
 // For each testcase
-// per testcase setup (optional: when action needs fresh or specific setup)
+// Per testcase setup (optional: when action needs fresh or specific setup)
 // Action
 // Assert
 ```
 
-No branching at any point between testcases!
-Use the above skeleton for EVERY test written or edited. Each section should begin with the above comment //.
+No conditional branching at any point between testcases, and asserts. This creates confusion and reading difficulty, it's better to split the test up.
+Use the above skeleton for EVERY test written or edited. Sections should begin with the three main directives.
 
 ## Code Simplicity
 - Keep cyclomatic complexity as small as possible. One function does one thing. Split before branching grows.
@@ -192,6 +197,21 @@ Use the above skeleton for EVERY test written or edited. Each section should beg
 - Canonical form wins. Identity-carrying strings are lowercase at rest (stored, compared, keyed). Display casing happens at the boundary, not in storage or logic. One concept gets one vocabulary.
 - Audits file duplication as a finding. A duplicate logged as an observation gets ignored. If two things are the same concept, the report puts it at the top.
 - Name functions instead of carrying anonymous ones around. No closures passed along and unpacked elsewhere.
+- Function names use a verb first: `LoadAll`, `NormalizeKey`.
+- Variables are short in short scope: `i`, `key`, `r`. Long scope takes a descriptive name.
+- Do not encode the type in the name: `key`, not `keyString`.
+- Do not use `data`, `info`, `tmp`, `res`, `manager`, `helper`, or `util`.
+- Bool names read as assertions: `ok`, `found`, `valid`.
+- Sentinel errors use `Err`. Initialisms keep case: `ID`, `URL`, `HTTP`.
+- A package name is not repeated in its contents.
+- A one-method interface uses the method plus `-er`.
 - Few levels of indirection. Direct calls beat wrappers around wrappers.
 - Measure touched files with gocyclo. New code stays at or below the complexity of the code it replaces.
 - Comments follow the policy above: one sentence, consequences and conditions only.
+
+| Weak | Strong |
+|---|---|
+| `func handleData(raw []byte) (User, error)` | `func DecodeUser(raw []byte) (User, error)` |
+| `keyString` | `key` |
+| `// This function loads the record.` | `// Load returns the record for key.` |
+| `// Increment the counter.` | delete |

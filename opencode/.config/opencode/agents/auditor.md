@@ -1,0 +1,1 @@
+../agent-hierarchy/agents/auditor.md

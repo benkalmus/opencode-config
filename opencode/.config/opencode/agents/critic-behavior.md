@@ -1,0 +1,1 @@
+../author-critic/agents/critic-behavior.md
