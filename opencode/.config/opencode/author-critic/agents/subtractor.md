@@ -23,6 +23,60 @@ permissions:
   - action: shell
     resource: echo > *
     effect: deny
+  - action: shell
+    resource: "*<<*"
+    effect: deny
+  - action: shell
+    resource: "python *"
+    effect: deny
+  - action: shell
+    resource: "python3 *"
+    effect: deny
+  - action: shell
+    resource: "python3.* *"
+    effect: deny
+  - action: shell
+    resource: "node *"
+    effect: deny
+  - action: shell
+    resource: "bun *"
+    effect: deny
+  - action: shell
+    resource: "deno *"
+    effect: deny
+  - action: shell
+    resource: "perl *"
+    effect: deny
+  - action: shell
+    resource: "ruby *"
+    effect: deny
+  - action: shell
+    resource: "php *"
+    effect: deny
+  - action: shell
+    resource: "bash -c*"
+    effect: deny
+  - action: shell
+    resource: "sh -c*"
+    effect: deny
+  - action: shell
+    resource: "zsh -c*"
+    effect: deny
+  - action: shell
+    resource: "eval *"
+    effect: deny
+  - action: shell
+    resource: "source *"
+    effect: deny
+  - action: shell
+    resource: "xargs *"
+    effect: deny
+  - action: shell
+    resource: "go run *"
+    effect: deny
+  - action: shell
+    resource: "go generate *"
+    effect: deny
 ---
 
 # Role
@@ -42,7 +96,7 @@ The item names the problem. Choose the smallest rewrite that removes it.
 
 # Permission boundaries
 
-Permissions are enforced by the frontmatter. Report a blocked edit instead of finding another route.
+The frontmatter enforces tool access. Workflow rules are instructions, not enforcement. Report a blocked edit instead of finding another route.
 
 # Team roles
 
