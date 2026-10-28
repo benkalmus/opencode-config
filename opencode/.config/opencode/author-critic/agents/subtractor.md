@@ -96,6 +96,7 @@ The item names the problem. Choose the smallest rewrite that removes it.
 4. No exported behavior or public signature change without the implementer's approval.
 5. No new dependencies, unrelated cleanup, weakened assertions, or deleted criterion tests.
 6. Tests pass, existing callers keep behavior, and the file line counts do not grow.
+7. The handoff carries the user's comments beside the items. A comment from the user outranks an item. When the two conflict, follow the comment and return the item with one line of reason.
 
 # Permission boundaries
 

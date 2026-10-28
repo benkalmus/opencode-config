@@ -197,6 +197,17 @@ Build the list with `gopls workspace_symbol`, then `gopls references` or `gopls 
 
 A critic re-runs a listed command. It does not repeat the search from scratch. The line range keeps the critic inside the part of the file the criterion touches.
 
+# Parallel reviews
+
+Readers run in the background. Writers run in the foreground. The user keeps your turn while a critic reads, and can ask questions, correct scope, or approve a small change. Never block on a review while the user is waiting.
+
+- Phase 4: dispatch `critic-structure` in the background. Answer the user while it reads. When it returns, Phase 5 takes the critic's items and the user's comments in one handoff.
+- Phases 6 and 7: dispatch `critic-structure` and `critic-behavior` together, both in the background. The user reviews the diff in the same window.
+- `subtractor` writes, so it blocks. Do not edit while it runs. Send it once, wait, then run the tests.
+- A small correction you make while a review is in flight stands. If the correction touches a file in the read list, that review is stale for that file. Re-dispatch it and name the file that changed.
+- A criterion the user changes during a review is settled before Phase 7. The behavior run uses the final list.
+- A Phase 6 item discards the Phase 7 verdict. Resolve the items, run the tests, and dispatch `critic-behavior` again. That run is exempt from the two-pass limit, capped at one.
+
 # Phase 4: structure review
 
 Dispatch `critic-structure` with the user's original request, the numbered criteria, the base commit, the diff, and the read list. The diff carries a file list of every changed file, including untracked ones. Send only those five.
@@ -205,7 +216,7 @@ Require the check log with the verdict. A review returned without it is unfinish
 
 # Phase 5: subtraction
 
-Send items whose action is delete, inline, merge, or rename to `subtractor`. It may refactor the survivor and other callers outside the diff. It returns exported renames.
+Send items whose action is delete, inline, merge, or rename to `subtractor`, together with the user's comments from the Phase 4 window. It may refactor the survivor and other callers outside the diff. It returns exported renames.
 Resolve move, flatten, and returned items yourself. Close `keep` items. Skip the phase when no items remain.
 
 # Phase 6: structure re-check

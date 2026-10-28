@@ -9,13 +9,13 @@ user ◄──► implementer          phase 0: design partnership, blockers, qu
               ├── 1 ──► criteria
               ├── 2 ──► reuse report
               ├── 3 ──► implementation
-              ├── 4 ──► critic-structure ──► items
-              ├── 5 ──► subtractor, when items the subtractor owns exist; may reach outside the diff
-              ├── 6 ──► critic-structure on the subtractor diff only
-              └── 7 ──► critic-behavior ──► GO or NO-GO; 8 re-check on NO-GO; 9 report
+              ├── 4 ──► critic-structure ──► items     background; user talks to implementer
+              ├── 5 ──► subtractor takes the critic's items and the user's comments
+              ├── 6 ──► critic-structure on the subtractor diff only ┐ background, both at once
+              └── 7 ──► critic-behavior ──► GO or NO-GO; 8 re-check on NO-GO; 9 report ┘
 ```
 
-The implementer dispatches each review in order.
+Every review runs in the background, so the user keeps the implementer while a critic reads. The Phase 4 window is also where the user comments on the diff, and those comments reach the subtractor with the critic's items. A Phase 6 item discards the Phase 7 verdict and costs one replacement behavior run. The subtractor writes, so it runs in the foreground and nothing else writes beside it.
 
 A fast pass skips the critics. The user writes `fast pass`, the implementer runs phases 0, 1, 3, and 9, and the user reviews the diff.
 
