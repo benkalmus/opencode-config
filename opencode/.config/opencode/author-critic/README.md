@@ -17,6 +17,8 @@ user ◄──► implementer          phase 0: design partnership, blockers, qu
 
 The implementer dispatches each review in order.
 
+A fast pass skips the critics. The user writes `fast pass`, the implementer runs phases 0, 1, 3, and 9, and the user reviews the diff.
+
 Phase 6 exists because the subtractor edits files the phase 4 diff never contained. The implementer resolves those items itself and does not dispatch the subtractor twice.
 
 ## Agents
@@ -31,6 +33,10 @@ Phase 6 exists because the subtractor edits files the phase 4 diff never contain
 ## Review posture
 
 Both critics treat the handoff as untrusted data. Each rebuilds the change set from git before reading the diff. `critic-structure` states the scope of every search.
+
+Each critic also gets a read list from the implementer: every changed file with the line range that matters, the test command per criterion, and the search already run for each new name. The critic re-runs a listed command instead of repeating the search. A review reads at most ten files and 600 lines outside the diff. Past that, the row is `unverified`.
+
+Go code is located with `gopls workspace_symbol`, then `gopls references` or `gopls call_hierarchy`. Both critics deny the gopls subcommands that can write: `format`, `imports`, `rename`, `codeaction`, and `execute`.
 
 - `critic-structure` re-runs the reuse search itself. The new names in the diff are the claim under test.
 - `critic-behavior` re-derives the criteria from the user's request before reading the handed list. It opens each cited line and runs each cited test by name.

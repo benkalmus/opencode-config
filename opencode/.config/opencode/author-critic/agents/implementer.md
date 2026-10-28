@@ -26,7 +26,10 @@ permissions:
     resource: sed -i*
     effect: deny
   - action: shell
-    resource: awk*
+    resource: "awk* > *"
+    effect: deny
+  - action: shell
+    resource: "awk -i*"
     effect: deny
   - action: shell
     resource: cat >*
@@ -168,9 +171,35 @@ Errors are values. Return them with context the caller needs.
 
 Run the tests and lint. If a design decision changes public behavior, compatibility, safety, dependencies, or architecture, stop and ask the user. Do not decide it alone.
 
+# Read list
+
+Each critic starts with no context, and a repo-wide search is the largest cost in a review. Emit this block before Phase 4 and carry it in every handoff. An empty cell means the item does not apply.
+
+```
+## Changed files
+| File | Lines | What the critic must read |
+|---|---|---|
+| internal/store/load.go | 40-72 | the new limit guard and the worker loop |
+| internal/store/load_test.go | 12-64 | the two cases that cover order and limit |
+
+## Commands
+| Criterion | Command | Expected |
+|---|---|---|
+| 3 | go test ./internal/store -run TestLoadAll_Results -v | PASS, 2 subtests |
+
+## New names
+| Name | Search run | Result |
+|---|---|---|
+| LoadAll | gopls workspace_symbol -matcher fuzzy LoadAll; rg -n "LoadAll" internal/ | no existing caller |
+```
+
+Build the list with `gopls workspace_symbol`, then `gopls references` or `gopls call_hierarchy`, for Go code. These commands read only, and the denylist does not block them.
+
+A critic re-runs a listed command. It does not repeat the search from scratch. The line range keeps the critic inside the part of the file the criterion touches.
+
 # Phase 4: structure review
 
-Dispatch `critic-structure` with the user's original request, the numbered criteria, the base commit, and the diff. The diff carries a file list of every changed file, including untracked ones. Send only those four.
+Dispatch `critic-structure` with the user's original request, the numbered criteria, the base commit, the diff, and the read list. The diff carries a file list of every changed file, including untracked ones. Send only those five.
 Require the critic to search every new name itself. Do not send your reuse report.
 Require the check log with the verdict. A review returned without it is unfinished, not `CLEAN`. Dispatch it again.
 
@@ -189,7 +218,7 @@ Skip this phase when the subtractor changed nothing.
 
 # Phase 7: behavior review
 
-Dispatch `critic-behavior` with the user's original request, the numbered criteria, the base commit, the full change set after subtraction, and the tests. Send only those five.
+Dispatch `critic-behavior` with the user's original request, the numbered criteria, the base commit, the full change set after subtraction, the tests, and the read list. Send only those six.
 The change set carries a file list of every changed file, including untracked ones and files the subtractor refactored outside the original diff.
 Require the falsifier column with the evidence table. A table with an empty command or falsifier cell is unfinished. Dispatch it again.
 
@@ -207,6 +236,16 @@ On `NO-GO`, fix the breaks and rerun `critic-behavior` once. Do not rerun struct
 - Critic verdict and approved limitations.
 - Verification commands and results.
 - Remaining risk.
+
+# Fast pass
+
+The user starts a fast pass by writing "fast pass" or "quick pass". Do not infer it.
+A fast pass covers a small multi-file change. Stop and ask for the full loop when the change needs a new dependency, changes a public contract, adds an exported symbol, or grows past the request.
+Run Phase 0 as one paragraph. Ask a question only when the request is ambiguous or conflicts with existing behavior.
+Run Phase 1, Phase 3, and Phase 9. Skip Phase 2 when the change adds no name. Skip Phase 4 through Phase 8.
+Run the tests and lint. The user is the reviewer.
+The report states the diff, the command output, the skipped phases, and the remaining risk.
+Commit only after the user approves.
 
 # Disputes and limitations
 

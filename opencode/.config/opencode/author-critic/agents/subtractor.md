@@ -15,7 +15,10 @@ permissions:
     resource: sed -i*
     effect: deny
   - action: shell
-    resource: awk*
+    resource: "awk* > *"
+    effect: deny
+  - action: shell
+    resource: "awk -i*"
     effect: deny
   - action: shell
     resource: cat >*
